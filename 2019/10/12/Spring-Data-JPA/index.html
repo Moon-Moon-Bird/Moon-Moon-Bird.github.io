@@ -1,0 +1,2056 @@
+﻿<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="一.ORM思想主要目的:操作实体类就相当于操作数据库表建立两个映射关系:     实体类和表的映射关系     实体类中属性和表中字段的映射关系 建立完成后,不再重点关注sql语句  实现了ORM思想的框架:mybatis,hibernate二.hibernate框架介绍Hibernate是一个开放源代码的对象关系映射框架">
+<meta name="keywords" content="Spring Data JPA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Data JPA">
+<meta property="og:url" content="http://yoursite.com/2019/10/12/Spring-Data-JPA/index.html">
+<meta property="og:site_name" content="月月鸟的个人博客">
+<meta property="og:description" content="一.ORM思想主要目的:操作实体类就相当于操作数据库表建立两个映射关系:     实体类和表的映射关系     实体类中属性和表中字段的映射关系 建立完成后,不再重点关注sql语句  实现了ORM思想的框架:mybatis,hibernate二.hibernate框架介绍Hibernate是一个开放源代码的对象关系映射框架">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://i.loli.net/2019/10/12/g2SG3C6qxj7BIzs.png">
+<meta property="og:image" content="https://i.loli.net/2019/10/12/2TBLtEy38fdwpGj.png">
+<meta property="og:image" content="https://i.loli.net/2019/10/12/axjW6IwtS8OCniG.png">
+<meta property="og:image" content="https://i.loli.net/2019/10/12/CKGkEcqW4xJydi1.png">
+<meta property="og:image" content="https://i.loli.net/2019/10/12/RwOY72jZqJhF4Ld.png">
+<meta property="og:updated_time" content="2019-10-12T10:21:41.186Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring Data JPA">
+<meta name="twitter:description" content="一.ORM思想主要目的:操作实体类就相当于操作数据库表建立两个映射关系:     实体类和表的映射关系     实体类中属性和表中字段的映射关系 建立完成后,不再重点关注sql语句  实现了ORM思想的框架:mybatis,hibernate二.hibernate框架介绍Hibernate是一个开放源代码的对象关系映射框架">
+<meta name="twitter:image" content="https://i.loli.net/2019/10/12/g2SG3C6qxj7BIzs.png">
+  <link rel="canonical" href="http://yoursite.com/2019/10/12/Spring-Data-JPA/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Spring Data JPA | 月月鸟的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+		<a href="https://github.com/Moon-Moon-Bird" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">月月鸟的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+        
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+      
+    
+      
+      
+        
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+      
+    
+      
+      
+        
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+      
+    
+      
+      
+        
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      
+    
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+        
+          <i class="fa fa-search fa-fw"></i>
+        
+        搜索
+        </a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/12/Spring-Data-JPA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="月月鸟">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/1.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="月月鸟的个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            Spring Data JPA
+            
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-10-12 18:15:25 / 修改时间：18:21:41" itemprop="dateCreated datePublished" datetime="2019-10-12T18:15:25+08:00">2019-10-12</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/10/12/Spring-Data-JPA/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/10/12/Spring-Data-JPA/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span>42k</span>
+            </span>
+          
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span>38 分钟</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="一-ORM思想"><a href="#一-ORM思想" class="headerlink" title="一.ORM思想"></a>一.ORM思想</h1><h2 id="主要目的-操作实体类就相当于操作数据库表"><a href="#主要目的-操作实体类就相当于操作数据库表" class="headerlink" title="主要目的:操作实体类就相当于操作数据库表"></a>主要目的:操作实体类就相当于操作数据库表</h2><pre><code>建立两个映射关系:
+    实体类和表的映射关系
+    实体类中属性和表中字段的映射关系
+建立完成后,不再重点关注sql语句
+
+实现了ORM思想的框架:mybatis,hibernate</code></pre><h1 id="二-hibernate框架介绍"><a href="#二-hibernate框架介绍" class="headerlink" title="二.hibernate框架介绍"></a>二.hibernate框架介绍</h1><h3 id="Hibernate是一个开放源代码的对象关系映射框架"><a href="#Hibernate是一个开放源代码的对象关系映射框架" class="headerlink" title="Hibernate是一个开放源代码的对象关系映射框架"></a>Hibernate是一个开放源代码的对象关系映射框架</h3><a id="more"></a><h3 id="它对JDBC进行了非常轻量级的对象封装"><a href="#它对JDBC进行了非常轻量级的对象封装" class="headerlink" title="它对JDBC进行了非常轻量级的对象封装"></a>它对JDBC进行了非常轻量级的对象封装</h3><h3 id="它将POJO与数据库表建立映射关系，是一个全自动的orm框架"><a href="#它将POJO与数据库表建立映射关系，是一个全自动的orm框架" class="headerlink" title="它将POJO与数据库表建立映射关系，是一个全自动的orm框架"></a>它将POJO与数据库表建立映射关系，是一个全自动的orm框架</h3><h3 id="hibernate可以自动生成SQL语句，自动执行，使得Java程序员可以随心所欲的使用对象编程思维来操纵数据库。"><a href="#hibernate可以自动生成SQL语句，自动执行，使得Java程序员可以随心所欲的使用对象编程思维来操纵数据库。" class="headerlink" title="hibernate可以自动生成SQL语句，自动执行，使得Java程序员可以随心所欲的使用对象编程思维来操纵数据库。"></a>hibernate可以自动生成SQL语句，自动执行，使得Java程序员可以随心所欲的使用对象编程思维来操纵数据库。</h3><h1 id="三-JPA规范"><a href="#三-JPA规范" class="headerlink" title="三.JPA规范"></a>三.JPA规范</h1><pre><code>jap规范,内部是由接口和抽象类组成的</code></pre><p>JPA的全称是Java Persistence API， 即Java 持久化API，是SUN公司推出的一套基于ORM的规范，内部是由一系列的接口和抽象类构成  </p>
+<p>JPA通过JDK 5.0注解描述对象－关系表的映射关系，并将运行期的实体对象持久化到数据库中。</p>
+<h2 id="JPA的优势"><a href="#JPA的优势" class="headerlink" title="JPA的优势"></a>JPA的优势</h2><ol>
+<li><p>标准化<br>JPA 是 JCP 组织发布的 Java EE 标准之一，因此任何声称符合 JPA 标准的框架都遵循同样的架构，提供相同的访问API，这保证了基于JPA开发的企业应用能够经过少量的修改就能够在不同的JPA框架下运行。</p>
+</li>
+<li><p>容器级特性的支持<br>JPA框架中支持大数据集、事务、并发等容器级事务，这使得 JPA 超越了简单持久化框架的局限，在企业应用发挥更大的作用。</p>
+</li>
+<li><p>简单方便<br>JPA的主要目标之一就是提供更加简单的编程模型：在JPA框架下创建实体和创建Java 类一样简单，没有任何的约束和限制，只需要使用 javax.persistence.Entity进行注释，JPA的框架和接口也都非常简单，没有太多特别的规则和设计模式的要求，开发者可以很容易的掌握。JPA基于非侵入式原则设计，因此可以很容易的和其它框架或者容器集成</p>
+</li>
+<li><p>查询能力<br>JPA的查询语言是面向对象而非面向数据库的，它以面向对象的自然语法构造查询语句，可以看成是Hibernate HQL的等价物。JPA定义了独特的JPQL（Java Persistence Query Language），JPQL是EJB QL的一种扩展，它是针对实体的一种查询语言，操作对象是实体，而不是关系数据库的表，而且能够支持批量更新和修改、JOIN、GROUP BY、HAVING 等通常只有 SQL 才能够提供的高级查询特性，甚至还能够支持子查询。</p>
+</li>
+<li><p>高级特性<br>JPA 中能够支持面向对象的高级特性，如类之间的继承、多态和类之间的复杂关系，这样的支持能够让开发者最大限度的使用面向对象的模型设计企业应用，而不需要自行处理这些特性在关系数据库的持久化。</p>
+</li>
+</ol>
+<h2 id="JPA与hibernate的关系"><a href="#JPA与hibernate的关系" class="headerlink" title="JPA与hibernate的关系"></a>JPA与hibernate的关系</h2><p><img src="https://i.loli.net/2019/10/12/g2SG3C6qxj7BIzs.png" alt="1.png"></p>
+<p>JPA和Hibernate的关系就像JDBC和JDBC驱动的关系，JPA是规范，Hibernate除了作为ORM框架之外，它也是一种JPA实现。JPA怎么取代Hibernate呢？JDBC规范可以驱动底层数据库吗？答案是否定的，也就是说，如果使用JPA规范进行数据库操作，底层需要hibernate作为其实现类完成数据持久化工作。</p>
+<h1 id="四-JPA的基本操作"><a href="#四-JPA的基本操作" class="headerlink" title="四.JPA的基本操作"></a>四.JPA的基本操作</h1><h2 id="搭建环境的过程"><a href="#搭建环境的过程" class="headerlink" title="搭建环境的过程"></a>搭建环境的过程</h2><h3 id="创建maven工程导入坐标"><a href="#创建maven工程导入坐标" class="headerlink" title="创建maven工程导入坐标"></a>创建maven工程导入坐标</h3><pre><code>&lt;properties&gt;
+    &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+    &lt;project.hibernate.version&gt;5.0.7.Final&lt;/project.hibernate.version&gt;
+&lt;/properties&gt;
+
+&lt;dependencies&gt;
+    &lt;!-- junit --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;junit&lt;/groupId&gt;
+        &lt;artifactId&gt;junit&lt;/artifactId&gt;
+        &lt;version&gt;4.12&lt;/version&gt;
+        &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+
+    &lt;!-- hibernate对jpa的支持包 --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+        &lt;artifactId&gt;hibernate-entitymanager&lt;/artifactId&gt;
+        &lt;version&gt;${project.hibernate.version}&lt;/version&gt;
+    &lt;/dependency&gt;
+
+    &lt;!-- c3p0 --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+        &lt;artifactId&gt;hibernate-c3p0&lt;/artifactId&gt;
+        &lt;version&gt;${project.hibernate.version}&lt;/version&gt;
+    &lt;/dependency&gt;
+
+    &lt;!-- log日志 --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;log4j&lt;/groupId&gt;
+        &lt;artifactId&gt;log4j&lt;/artifactId&gt;
+        &lt;version&gt;1.2.17&lt;/version&gt;
+    &lt;/dependency&gt;
+
+    &lt;!-- Mysql and MariaDB --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;mysql&lt;/groupId&gt;
+        &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+        &lt;version&gt;5.1.6&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre><h3 id="配置jpa的核心配置文件"><a href="#配置jpa的核心配置文件" class="headerlink" title="配置jpa的核心配置文件"></a>配置jpa的核心配置文件</h3><p>位置:配置到类路径下的一个叫做META-INF的文件夹下<br>命名:persistence.xml</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;persistence xmlns=&quot;http://java.sun.com/xml/ns/persistence&quot; version=&quot;2.0&quot;&gt;
+    &lt;!--需要配置persistence-unit节点
+        持久化单元:
+            name:持久化单元名称
+            transaction-type:事务管理的方式
+                JTA:分布式事务管理
+                RESOURCE_LOCAL:本地事务管理
+    --&gt;
+    &lt;persistence-unit name=&quot;myJpa&quot; transaction-type=&quot;RESOURCE_LOCAL&quot;&gt;
+        &lt;!--jpa的实现方式--&gt;
+        &lt;provider&gt;org.hibernate.jpa.HibernatePersistenceProvider&lt;/provider&gt;
+
+        &lt;!--可选配置:配置jpa实现方的配置信息--&gt;
+        &lt;properties&gt;
+            &lt;!--数据库信息
+                用户名:javax.persistence.jdbc.user
+                密码:javax.persistence.jdbc.password
+                驱动:javax.persistence.jdbc.driver
+                数据库地址:javax.persistence.jdbc.url
+            --&gt;
+            &lt;property name=&quot;javax.persistence.jdbc.user&quot; value=&quot;root&quot;/&gt;
+            &lt;property name=&quot;javax.persistence.jdbc.password&quot; value=&quot;root&quot;/&gt;
+            &lt;property name=&quot;javax.persistence.jdbc.driver&quot; value=&quot;com.mysql.jdbc.Driver&quot;/&gt;
+            &lt;property name=&quot;javax.persistence.jdbc.url&quot; value=&quot;jdbc:mysql:///jpa&quot;/&gt;
+
+            &lt;!--配置jpa实现方(hibernate)的配置信息
+                显示sql:          hibernate.show_sql   false|true
+                自动创建数据库表:   hibernate.hbm2ddl.auto
+                    create:程序运行时创建数据库表(如果有表,先删除表再创建)
+                    update:程序运行时创建表(如果有表,不会创建表)
+                    none:不回创建表
+            --&gt;
+            &lt;property name=&quot;hibernate.show_sql&quot; value=&quot;true&quot;/&gt;
+            &lt;property name=&quot;hibernate.hbm2ddl.auto&quot; value=&quot;create&quot;/&gt;
+        &lt;/properties&gt;
+
+    &lt;/persistence-unit&gt;
+&lt;/persistence&gt;</code></pre><h3 id="编写客户的实体类"><a href="#编写客户的实体类" class="headerlink" title="编写客户的实体类"></a>编写客户的实体类</h3><h3 id="配置实体类和表-类中属性和表中字段的映射关系"><a href="#配置实体类和表-类中属性和表中字段的映射关系" class="headerlink" title="配置实体类和表,类中属性和表中字段的映射关系"></a>配置实体类和表,类中属性和表中字段的映射关系</h3><pre><code>package com.kobe.domain;
+
+import javax.persistence.*;
+
+/**
+ * 客户的实体类
+ *  配置映射关系
+ *      1.实体类和表的映射关系
+ *          @Entity:声明实体类
+ *          @Table:配置实体类和表的映射关系
+ *              name:配置数据库表的名称
+ *
+ *      2.实体类中属性和表中字段的映射关系
+ *
+ *
+ *
+ */
+@Entity
+@Table(name = &quot;cst_customer&quot;)
+public class Customer {
+    /**
+     * @Id:声明主键的配置
+     * @GeneratedValue:配置主键的生成策略
+     *      strategy
+     *      GenerationType.IDENTITY:自增--mysql
+     *          底层数据库必须支持自动增长(底层数据库支持的自动增长的方式,对id自增)
+     *      GenerationType.SEQUENCE:序列--Oracle
+     *          底层数据库必须支持序列
+     *      GenerationType.TABLE:jpa提供的一种机制,通过一张数据库表的形式完成主键自增
+     *      GenerationType.AUTO:由程序自动的帮助我们选择主键生成策略
+     * @Column:配置属性和字段的映射关系
+     *      name:数据库表中字段的名称
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = &quot;cust_id&quot;)
+    private Long custId;//客户主键
+
+    @Column(name = &quot;cust_name&quot;)
+    private String custName;//客户名称
+
+    @Column(name = &quot;cust_source&quot;)
+    private String custSource;//客户来源
+
+    @Column(name = &quot;cust_level&quot;)
+    private String custLevel;//客户级别
+
+    @Column(name = &quot;cust_industry&quot;)
+    private String custIndustry;//可不所属行业
+
+    @Column(name = &quot;cust_phone&quot;)
+    private String custPhone;//客户的联系方式
+
+    @Column(name = &quot;cust_address&quot;)
+    private String custAddress;//客户地址
+
+    public Long getCustId() {
+        return custId;
+    }
+
+    public void setCustId(Long custId) {
+        this.custId = custId;
+    }
+
+    public String getCustName() {
+        return custName;
+    }
+
+    public void setCustName(String custName) {
+        this.custName = custName;
+    }
+
+    public String getCustSource() {
+        return custSource;
+    }
+
+    public void setCustSource(String custSource) {
+        this.custSource = custSource;
+    }
+
+    public String getCustLevel() {
+        return custLevel;
+    }
+
+    public void setCustLevel(String custLevel) {
+        this.custLevel = custLevel;
+    }
+
+    public String getCustIndustry() {
+        return custIndustry;
+    }
+
+    public void setCustIndustry(String custIndustry) {
+        this.custIndustry = custIndustry;
+    }
+
+    public String getCustPhone() {
+        return custPhone;
+    }
+
+    public void setCustPhone(String custPhone) {
+        this.custPhone = custPhone;
+    }
+
+    public String getCustAddress() {
+        return custAddress;
+    }
+
+    public void setCustAddress(String custAddress) {
+        this.custAddress = custAddress;
+    }
+
+    @Override
+    public String toString() {
+        return &quot;Customer{&quot; +
+                &quot;custId=&quot; + custId +
+                &quot;, custName=&apos;&quot; + custName + &apos;\&apos;&apos; +
+                &quot;, custSource=&apos;&quot; + custSource + &apos;\&apos;&apos; +
+                &quot;, custLevel=&apos;&quot; + custLevel + &apos;\&apos;&apos; +
+                &quot;, custIndustry=&apos;&quot; + custIndustry + &apos;\&apos;&apos; +
+                &quot;, custPhone=&apos;&quot; + custPhone + &apos;\&apos;&apos; +
+                &quot;, custAddress=&apos;&quot; + custAddress + &apos;\&apos;&apos; +
+                &apos;}&apos;;
+    }
+}</code></pre><h3 id="保存客户到数据库中"><a href="#保存客户到数据库中" class="headerlink" title="保存客户到数据库中"></a>保存客户到数据库中</h3><pre><code>/**
+ * 测试jpa的保存
+ *  保存一个客户到数据库中
+ *
+ *  Jpa的操作步骤
+ *      1.加载配置文件创建工厂(实体管理器工厂)对象
+ *      2.通过实体管理器工厂获取实体管理器
+ *      3.通过实体管理器获取事务对象,开启事务
+ *      4.完成增删改查操作
+ *      5.提交事务(回滚事务)
+ *      6.释放资源
+ */
+@Test
+public void testSave() throws Exception{
+    //1.加载配置文件创建工厂(实体管理器工厂)对象
+    EntityManagerFactory factory = Persistence.createEntityManagerFactory(&quot;myJpa&quot;);
+    //2.通过实体管理器工厂获取实体管理器
+    EntityManager em = factory.createEntityManager();
+    //3.通过实体管理器获取事务对象,开启事务
+    EntityTransaction tx = em.getTransaction();
+    tx.begin();
+    //4.完成增删改查操作(保存一个客户到数据库)
+    Customer customer = new Customer();
+    customer.setCustName(&quot;bryant&quot;);
+    customer.setCustIndustry(&quot;basketball&quot;);
+    //保存
+    em.persist(customer);//666
+    //5.提交事务(回滚事务)
+    tx.commit();
+    //6.释放资源
+    em.close();
+    factory.close();
+
+}</code></pre><h2 id="总结-jpa操作的基本步骤"><a href="#总结-jpa操作的基本步骤" class="headerlink" title="总结:jpa操作的基本步骤:"></a>总结:jpa操作的基本步骤:</h2><h3 id="1-加载配置文件创建实体管理器工厂"><a href="#1-加载配置文件创建实体管理器工厂" class="headerlink" title="1.加载配置文件创建实体管理器工厂"></a>1.加载配置文件创建实体管理器工厂</h3><pre><code>Persistence:静态方法(根据持久化单元名称创建实体管理器工厂)
+方法:createEntityManagerFactory(持久化单元名称)
+作用:创建实体管理器工厂</code></pre><h3 id="2-根据实体管理器工厂-创建实体管理器"><a href="#2-根据实体管理器工厂-创建实体管理器" class="headerlink" title="2.根据实体管理器工厂,创建实体管理器"></a>2.根据实体管理器工厂,创建实体管理器</h3><pre><code>EntityManagerFactory:获取 EntityManager对象
+方法:createEntityManager
+*内部维护了很多内容
+    内部维护了数据库信息
+    维护了缓存信息
+    维护了所有的实体管理器对象
+    在创建EntityManagerFactory的过程中会根据配置创建数据库表
+*EntityManagerFactory的创建过程比较浪费资源
+特点:线程安全的对象
+    多个线程访问同一个EntityManagerFactory不会有线程安全问题
+*如何解决EntityManagerFactory的创建过程浪费资源的问题
+    思路:创建一个公共的EntityManagerFactory对象
+    *静态代码块的形式创建EntityManagerFactory</code></pre><hr>
+<p>静态代码块思想,抽取JpaUtils工具类:</p>
+<pre><code>/**
+ * 解决实体管理器工厂的浪费资源和耗时问题
+ *      通过静态代码块的形式,当程序第一次访问此工具类时,创建一个公共的实体管理器对象
+ *
+ *      第一次访问getEntityManager方法:经过静态代码块创建factory对象,再调用方法传一个EntityManager对象
+ *      第二次访问getEntityManager方法:直接通过一个已经创建好的factory对象,创建EntityManager对象
+ *
+ */
+public class JpaUtils {
+
+    private static EntityManagerFactory factory;
+
+    static {
+        //1.加载配置文件,创建EntityManagerFactory
+        factory = Persistence.createEntityManagerFactory(&quot;myJpa&quot;);
+    }
+
+    /**
+     * 获取EntityManager对象
+     */
+    public static EntityManager getEntityManager() {
+        return factory.createEntityManager();
+    }    
+}</code></pre><h3 id="3-根据实体管理器创建事务对象-开启事务"><a href="#3-根据实体管理器创建事务对象-开启事务" class="headerlink" title="3.根据实体管理器创建事务对象,开启事务"></a>3.根据实体管理器创建事务对象,开启事务</h3><h3 id="4-增删改查操作"><a href="#4-增删改查操作" class="headerlink" title="4.增删改查操作"></a>4.增删改查操作</h3><h3 id="5-提交事务"><a href="#5-提交事务" class="headerlink" title="5. 提交事务"></a>5. 提交事务</h3><pre><code>EntityManager对象:实体类管理器
+方法:beginTransaction:创建事务对象
+    presist:保存
+    merge:更新
+    remove:删除
+    find(立即加载)/getReference(延迟加载/懒加载) :根据id查询
+
+Transaction对象:事务
+方法:begin:开启事务
+    commit:提交事务
+    rollback:回滚</code></pre><h3 id="6-释放资源"><a href="#6-释放资源" class="headerlink" title="6. 释放资源"></a>6. 释放资源</h3><h4 id="根据id进行查询"><a href="#根据id进行查询" class="headerlink" title="根据id进行查询"></a>根据id进行查询</h4><pre><code>/**
+ * 根据id查询客户
+ * 使用find方法查询
+ *      1.查询的对象就是当前客户对象本身
+ *      2.在调用find方法的时候,就会发送sql语句查询数据库
+ */
+@Test
+public void testFind() {
+    //1.通过工具类获取EntityManager
+    EntityManager em = JpaUtils.getEntityManager();
+    //2.开启事务
+    EntityTransaction tx = em.getTransaction();
+    tx.begin();
+    //3.增删改查操作
+    /**
+     * find:根据id查询客户
+     *      class:查询数据的结果需要包装的实体类的字节码
+     *      id:查询的主键的取值
+     *
+     * 立即加载
+     */
+    Customer customer = em.find(Customer.class, 1l);
+    System.out.println(customer);
+    //4.提交事务
+    tx.commit();
+    //5.释放资源
+    em.close();
+}
+
+/**
+ * 根据id查询客户
+ *  使用getReference方法查询
+ *      1.查询的对象是一个动态代理对象
+ *      2.在调用getReference方法不会立即发送sql语句查询数据库
+ *          当调用查询结果对象的时候,才会发送查询的sql语句(什么时候用,什么时候发)
+ *
+ *  延迟加载/懒加载
+ */
+@Test
+public void testReference() {
+    //1.通过工具类获取EntityManager
+    EntityManager em = JpaUtils.getEntityManager();
+    //2.开启事务
+    EntityTransaction tx = em.getTransaction();
+    tx.begin();
+    //3.增删改查操作
+    /**
+     * find:根据id查询客户
+     *      class:查询数据的结果需要包装的实体类的字节码
+     *      id:查询的主键的取值
+     */
+    Customer customer = em.getReference(Customer.class, 1l);
+    System.out.println(customer);
+    //4.提交事务
+    tx.commit();
+    //5.释放资源
+    em.close();
+}</code></pre><h4 id="删除客户"><a href="#删除客户" class="headerlink" title="删除客户"></a>删除客户</h4><pre><code>/**
+ * 删除客户
+ */
+@Test
+public void testRemove() {
+    //1.通过工具类获取EntityManager
+    EntityManager em = JpaUtils.getEntityManager();
+    //2.开启事务
+    EntityTransaction tx = em.getTransaction();
+    tx.begin();
+    //3.增删改查操作
+    //3.1根据id查询客户
+    Customer customer = em.getReference(Customer.class, 1l);
+    //3.2调用remove方法
+    em.remove(customer);
+    //4.提交事务
+    tx.commit();
+    //5.释放资源
+    em.close();
+}</code></pre><h4 id="客户的更新"><a href="#客户的更新" class="headerlink" title="客户的更新"></a>客户的更新</h4><pre><code>/**
+ * 更新客户的操作
+ */
+@Test
+public void testUpdate() {
+    //1.通过工具类获取EntityManager
+    EntityManager em = JpaUtils.getEntityManager();
+    //2.开启事务
+    EntityTransaction tx = em.getTransaction();
+    tx.begin();
+    //3.增删改查操作
+    //3.1根据id查询客户
+    Customer customer = em.getReference(Customer.class, 1l);
+    //3.2更新客户
+    customer.setCustIndustry(&quot;basketball&quot;);
+    em.merge(customer);
+    //4.提交事务
+    tx.commit();
+    //5.释放资源
+    em.close();
+}</code></pre><h1 id="五-JPQL查询"><a href="#五-JPQL查询" class="headerlink" title="五.JPQL查询"></a>五.JPQL查询</h1><h3 id="JPQL全称Java-Persistence-Query-Language"><a href="#JPQL全称Java-Persistence-Query-Language" class="headerlink" title="JPQL全称Java Persistence Query Language"></a>JPQL全称Java Persistence Query Language</h3><pre><code>sql:查询的是表和表中的字段
+jpql:查询的是实体类和类中的属性
+*jpql和sql语句的语法相似</code></pre><h2 id="1-查询全部"><a href="#1-查询全部" class="headerlink" title="1.查询全部"></a>1.查询全部</h2><pre><code>/**
+ * 查询全部
+ * jpql:from com.kobe.domain.Customer
+ * sql: select * from cst_customer
+ */
+@Test
+public void testFindAll() {
+    //1.获取entityManager对象
+    EntityManager em = JpaUtils.getEntityManager();
+    //2.开启事务
+    EntityTransaction tx = em.getTransaction();
+    tx.begin();
+    //3.查询全部
+    String jpql = &quot;from com.kobe.domain.Customer&quot;;
+    Query query = em.createQuery(jpql);//创建Query查询对象,query对象才是执行jpql的对象
+    //发送查询并封装结果集
+    List list = query.getResultList();
+
+    for (Object o : list) {
+        System.out.println(o);
+    }
+    //4.提交事务
+    tx.commit();
+    //5.释放资源
+    em.close();
+}</code></pre><h2 id="2-分页查询"><a href="#2-分页查询" class="headerlink" title="2.分页查询"></a>2.分页查询</h2><pre><code>/**
+ * 分页查询
+ *      sql: SELECT * FROM cst_customer LIMIT 0,1
+ *      jpql:from Customer
+ */
+@Test
+public void testPaged() {
+    //1.获取entityManager对象
+    EntityManager em = JpaUtils.getEntityManager();
+    //2.开启事务
+    EntityTransaction tx = em.getTransaction();
+    tx.begin();
+    //3.查询全部
+    //3.1根据jpql语句创建Query查询对象
+    String jpql = &quot;from Customer&quot;;
+    Query query = em.createQuery(jpql);//创建Query查询对象,query对象才是执行jpql的对象
+    //3.2对参数赋值--分页参数
+    //起始索引
+    query.setFirstResult(0);
+    //每页条数
+    query.setMaxResults(2);
+    //发送查询并封装结果集
+    /**
+     * getResultList:直接将查询结果封装为list集合
+     * getSingleResult:得到唯一的结果
+     */
+    List list = query.getResultList();
+    for (Object o : list) {
+        System.out.println(o);
+    }
+    //4.提交事务
+    tx.commit();
+    //5.释放资源
+    em.close();
+}</code></pre><h2 id="3-统计查询"><a href="#3-统计查询" class="headerlink" title="3.统计查询"></a>3.统计查询</h2><pre><code>/**
+ * 使用jpql查询,统计客户总数
+ *      sql: select count(cust_id) from cst_customer
+ *      jpql:select count(custId) from Customer
+ */
+@Test
+public void testCount() {
+    //1.获取entityManager对象
+    EntityManager em = JpaUtils.getEntityManager();
+    //2.开启事务
+    EntityTransaction tx = em.getTransaction();
+    tx.begin();
+    //3.查询全部
+    String jpql = &quot;select count(custId) from Customer&quot;;
+    Query query = em.createQuery(jpql);//创建Query查询对象,query对象才是执行jpql的对象
+    //发送查询并封装结果集
+    /**
+     * getResultList:直接将查询结果封装为list集合
+     * getSingleResult:得到唯一的结果
+     */
+    Object result = query.getSingleResult();
+
+    System.out.println(result);
+    //4.提交事务
+    tx.commit();
+    //5.释放资源
+    em.close();
+}</code></pre><h2 id="4-条件查询"><a href="#4-条件查询" class="headerlink" title="4.条件查询"></a>4.条件查询</h2><pre><code>/**
+ * 条件查询 查询客户名称已&apos;k&apos;开头的客户
+ *      sql: SELECT * FROM cst_customer WHERE cust_name LIKE &apos;k%&apos;
+ *      jpql:from Customer where custName like ?
+ */
+@Test
+public void testCondition() {
+    //1.获取entityManager对象
+    EntityManager em = JpaUtils.getEntityManager();
+    //2.开启事务
+    EntityTransaction tx = em.getTransaction();
+    tx.begin();
+    //3.查询全部
+    //3.1根据jpql语句创建Query查询对象
+    String jpql = &quot;from Customer where custName like ?&quot;;
+    Query query = em.createQuery(jpql);//创建Query查询对象,query对象才是执行jpql的对象
+    //3.2对参数赋值--占位符参数
+    //第一个参数:占位符索引位置  第二个参数:取值
+    query.setParameter(1,&quot;k%&quot;);
+    //发送查询并封装结果集
+    /**
+     * getResultList:直接将查询结果封装为list集合
+     * getSingleResult:得到唯一的结果
+     */
+    List list = query.getResultList();
+    for (Object o : list) {
+        System.out.println(o);
+    }
+    //4.提交事务
+    tx.commit();
+    //5.释放资源
+    em.close();
+}</code></pre><h2 id="5-排序"><a href="#5-排序" class="headerlink" title="5.排序"></a>5.排序</h2><pre><code>/**
+ * 根据id倒序查询全部客户
+ *      sql: select * from cst_customer order by cust_id desc
+ *      jpql:from Customer order by custId desc
+ */
+@Test
+public void testOrders() {
+    //1.获取entityManager对象
+    EntityManager em = JpaUtils.getEntityManager();
+    //2.开启事务
+    EntityTransaction tx = em.getTransaction();
+    tx.begin();
+    //3.倒序查询全部
+    String jpql = &quot;from Customer order by custId desc&quot;;
+    Query query = em.createQuery(jpql);//创建Query查询对象,query对象才是执行jpql的对象
+    //发送查询并封装结果集
+    List list = query.getResultList();
+
+    for (Object o : list) {
+        System.out.println(o);
+    }
+    //4.提交事务
+    tx.commit();
+    //5.释放资源
+    em.close();
+}</code></pre><h1 id="六-Spring-Data-JPA"><a href="#六-Spring-Data-JPA" class="headerlink" title="六.Spring Data JPA"></a>六.Spring Data JPA</h1><p>Spring Data JPA 是 Spring 基于 ORM 框架、JPA 规范的基础上封装的一套JPA应用框架，可使开发者用极简的代码即可实现对数据库的访问和操作。它提供了包括增删改查等在内的常用功能，且易于扩展！学习并使用 Spring Data JPA 可以极大提高开发效率</p>
+<p><strong>Spring Data JPA 让我们解脱了DAO层的操作，基本上所有CRUD都可以依赖于它来实现,在实际的工作工程中，推荐使用Spring Data JPA + ORM（如：hibernate）完成操作，这样在切换不同的ORM框架时提供了极大的方便，同时也使数据库层操作更加简单，方便解耦</strong></p>
+<h2 id="快速入门"><a href="#快速入门" class="headerlink" title="快速入门"></a>快速入门</h2><p>案例:客户的基本CRUD</p>
+<h3 id="1-搭建环境"><a href="#1-搭建环境" class="headerlink" title="1.搭建环境"></a>1.搭建环境</h3><p>创建工程导入坐标</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;groupId&gt;com.kobe&lt;/groupId&gt;
+    &lt;artifactId&gt;jpa_day02&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+
+    &lt;properties&gt;
+        &lt;spring.version&gt;5.0.2.RELEASE&lt;/spring.version&gt;
+        &lt;hibernate.version&gt;5.0.7.Final&lt;/hibernate.version&gt;
+        &lt;slf4j.version&gt;1.6.6&lt;/slf4j.version&gt;
+        &lt;log4j.version&gt;1.2.12&lt;/log4j.version&gt;
+        &lt;c3p0.version&gt;0.9.1.2&lt;/c3p0.version&gt;
+        &lt;mysql.version&gt;5.1.6&lt;/mysql.version&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;!-- junit单元测试 --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;junit&lt;/groupId&gt;
+            &lt;artifactId&gt;junit&lt;/artifactId&gt;
+            &lt;version&gt;4.9&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- spring beg --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.aspectj&lt;/groupId&gt;
+            &lt;artifactId&gt;aspectjweaver&lt;/artifactId&gt;
+            &lt;version&gt;1.6.8&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-aop&lt;/artifactId&gt;
+            &lt;version&gt;${spring.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-context&lt;/artifactId&gt;
+            &lt;version&gt;${spring.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-context-support&lt;/artifactId&gt;
+            &lt;version&gt;${spring.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-orm&lt;/artifactId&gt;
+            &lt;version&gt;${spring.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-beans&lt;/artifactId&gt;
+            &lt;version&gt;${spring.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-core&lt;/artifactId&gt;
+            &lt;version&gt;${spring.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- spring end --&gt;
+
+        &lt;!-- hibernate beg --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+            &lt;artifactId&gt;hibernate-core&lt;/artifactId&gt;
+            &lt;version&gt;${hibernate.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+            &lt;artifactId&gt;hibernate-entitymanager&lt;/artifactId&gt;
+            &lt;version&gt;${hibernate.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+            &lt;artifactId&gt;hibernate-validator&lt;/artifactId&gt;
+            &lt;version&gt;5.2.1.Final&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!-- hibernate end --&gt;
+
+        &lt;!-- c3p0 beg --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;c3p0&lt;/groupId&gt;
+            &lt;artifactId&gt;c3p0&lt;/artifactId&gt;
+            &lt;version&gt;${c3p0.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!-- c3p0 end --&gt;
+
+        &lt;!-- log end --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;log4j&lt;/groupId&gt;
+            &lt;artifactId&gt;log4j&lt;/artifactId&gt;
+            &lt;version&gt;${log4j.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+            &lt;artifactId&gt;slf4j-api&lt;/artifactId&gt;
+            &lt;version&gt;${slf4j.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+            &lt;artifactId&gt;slf4j-log4j12&lt;/artifactId&gt;
+            &lt;version&gt;${slf4j.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!-- log end --&gt;
+
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;mysql&lt;/groupId&gt;
+            &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+            &lt;version&gt;${mysql.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;!--spring-data-jpa的坐标--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.data&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-data-jpa&lt;/artifactId&gt;
+            &lt;version&gt;1.9.0.RELEASE&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-test&lt;/artifactId&gt;
+            &lt;version&gt;${spring.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- el beg 使用spring data jpa 必须引入 --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.el&lt;/groupId&gt;
+            &lt;artifactId&gt;javax.el-api&lt;/artifactId&gt;
+            &lt;version&gt;2.2.4&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.glassfish.web&lt;/groupId&gt;
+            &lt;artifactId&gt;javax.el&lt;/artifactId&gt;
+            &lt;version&gt;2.2.4&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!-- el end --&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;    </code></pre><p>配置spring的配置文件(整合spring data jpa)</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:aop=&quot;http://www.springframework.org/schema/aop&quot;
+       xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+       xmlns:jdbc=&quot;http://www.springframework.org/schema/jdbc&quot; xmlns:tx=&quot;http://www.springframework.org/schema/tx&quot;
+       xmlns:jpa=&quot;http://www.springframework.org/schema/data/jpa&quot; xmlns:task=&quot;http://www.springframework.org/schema/task&quot;
+       xsi:schemaLocation=&quot;
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/data/jpa
+        http://www.springframework.org/schema/data/jpa/spring-jpa.xsd&quot;&gt;
+
+    &lt;!--spring和spring data jpa的配置--&gt;
+
+    &lt;!--1.创建entityManagerFactory对象交给spring容器管理--&gt;
+    &lt;bean id=&quot;entityManagerFactory&quot; class=&quot;org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean&quot;&gt;
+        &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;/&gt;
+        &lt;!--配置的是扫描的包(实体类所在的包)--&gt;
+        &lt;property name=&quot;packagesToScan&quot; value=&quot;com.kobe.domain&quot;/&gt;
+        &lt;!--jpa的实现方式--&gt;
+        &lt;property name=&quot;persistenceProvider&quot;&gt;
+            &lt;bean class=&quot;org.hibernate.jpa.HibernatePersistenceProvider&quot;/&gt;
+        &lt;/property&gt;
+
+        &lt;!--jpa的供应商适配器--&gt;
+        &lt;property name=&quot;jpaVendorAdapter&quot;&gt;
+            &lt;bean class=&quot;org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter&quot;&gt;
+                &lt;!--配置是否自动创建数据库表--&gt;
+                &lt;property name=&quot;generateDdl&quot; value=&quot;false&quot; /&gt;
+                &lt;!--指定数据库类型--&gt;
+                &lt;property name=&quot;database&quot; value=&quot;MYSQL&quot; /&gt;
+                &lt;!--数据库方言:支持的特有语法--&gt;
+                &lt;property name=&quot;databasePlatform&quot; value=&quot;org.hibernate.dialect.MySQLDialect&quot; /&gt;
+                &lt;!--是否显示sql--&gt;
+                &lt;property name=&quot;showSql&quot; value=&quot;true&quot; /&gt;
+            &lt;/bean&gt;
+        &lt;/property&gt;
+
+        &lt;!--jpa的方言:高级特性--&gt;
+        &lt;property name=&quot;jpaDialect&quot;&gt;
+            &lt;bean class=&quot;org.springframework.orm.jpa.vendor.HibernateJpaDialect&quot;/&gt;
+        &lt;/property&gt;
+
+    &lt;/bean&gt;
+
+    &lt;!--2.创建数据库连接池--&gt;
+    &lt;bean id=&quot;dataSource&quot; class=&quot;com.mchange.v2.c3p0.ComboPooledDataSource&quot;&gt;
+        &lt;property name=&quot;jdbcUrl&quot; value=&quot;jdbc:mysql:///jpa&quot;/&gt;
+        &lt;property name=&quot;user&quot; value=&quot;root&quot;/&gt;
+        &lt;property name=&quot;password&quot; value=&quot;root&quot;/&gt;
+        &lt;property name=&quot;driverClass&quot; value=&quot;com.mysql.jdbc.Driver&quot;/&gt;
+    &lt;/bean&gt;
+
+    &lt;!--3.整合spring dataJpa--&gt;
+    &lt;jpa:repositories base-package=&quot;com.kobe.dao&quot; transaction-manager-ref=&quot;transactionManager&quot;
+     entity-manager-factory-ref=&quot;entityManagerFactory&quot;&gt;&lt;/jpa:repositories&gt;
+
+    &lt;!--4.配置事务管理器--&gt;
+    &lt;bean id=&quot;transactionManager&quot; class=&quot;org.springframework.orm.jpa.JpaTransactionManager&quot;&gt;
+        &lt;property name=&quot;entityManagerFactory&quot; ref=&quot;entityManagerFactory&quot;/&gt;
+    &lt;/bean&gt;
+
+    &lt;!--5.声明式事务--&gt;
+
+    &lt;!--6.配置包扫描--&gt;
+    &lt;context:component-scan base-package=&quot;com.kobe&quot;/&gt;
+
+&lt;/beans&gt;</code></pre><p>编写实体类(客户实体类,使用jpa注解配置映射关系)<br>同上</p>
+<h3 id="2-编写一个符合spring-Data-Jpa的dao层接口"><a href="#2-编写一个符合spring-Data-Jpa的dao层接口" class="headerlink" title="2.编写一个符合spring Data Jpa的dao层接口"></a>2.编写一个符合spring Data Jpa的dao层接口</h3><p>dao层接口规范:  </p>
+<ol>
+<li><p>需要继承两个接口(JpaRepository,JpaSpecificationExecutor)  </p>
+</li>
+<li><p>需要提供响应的泛型</p>
+<p> /**</p>
+<ul>
+<li>符合SpringDateJpa层接口规范</li>
+<li>JpaRepository&lt;操作的实体类类型,实体类中主键属性的类型&gt;</li>
+<li>封装了基本CURD操作</li>
+<li>JpaSpecificationExecutor&lt;操作的实体类类型&gt;</li>
+<li>封装了复杂查询(分页)</li>
+<li>/<br>public interface CustomerDao extends JpaRepository&lt;Customer,Long&gt;,JpaSpecificationExecutor<customer> {<br>}</customer></li>
+</ul>
+</li>
+</ol>
+<h3 id="3-测试类编写"><a href="#3-测试类编写" class="headerlink" title="3.测试类编写"></a>3.测试类编写</h3><pre><code>//声明spring提供的单元测试环境
+@RunWith(SpringJUnit4ClassRunner.class)
+//指定spring容器的配置信息
+@ContextConfiguration(locations = &quot;classpath:applicationContext.xml&quot;)
+public class CustomerDaoTest {
+    @Autowired
+    private CustomerDao customerDao;
+
+    /**
+     * 根据id查询
+     */
+    @Test
+    public void testFindOne() {
+        Customer customer = customerDao.findOne(4l);
+        System.out.println(customer);
+    }
+
+    /**
+     * save:保存或者更新
+     *      根据传递的对象是否存在主键id:
+     *          如果没有id主键属性:保存
+     *          如果存在id逐渐属性:根据id查询数据,更新数据
+     */
+    @Test
+    public void testSave() {
+        Customer customer = new Customer();
+        customer.setCustName(&quot;乔碧罗&quot;);
+        customer.setCustLevel(&quot;level6&quot;);
+        customer.setCustIndustry(&quot;军事&quot;);
+        customerDao.save(customer);
+    }
+
+    @Test
+    public void testUpdate() {
+        Customer customer = new Customer();
+        customer.setCustName(&quot;JOJO&quot;);
+        customer.setCustId(5l);
+        customer.setCustLevel(&quot;level8&quot;);
+        customer.setCustIndustry(&quot;替身&quot;);
+        customerDao.save(customer);
+    }
+
+    @Test
+    public void testDelete(){
+        customerDao.delete(6l);
+    }
+
+    @Test
+    public void testFindAll(){
+        List&lt;Customer&gt; list = customerDao.findAll();
+        for (Customer customer : list) {
+            System.out.println(customer);
+        }
+    }
+}</code></pre><h4 id="总结"><a href="#总结" class="headerlink" title="总结:"></a>总结:</h4><pre><code>findOne(id):根据id查询
+save(customer):保存或者更新(依据:传递的实体类对象中,是否包含id属性)
+delete(id):根据id删除
+findAll():查询全部</code></pre><h2 id="Spring-Data-JPA的内部原理剖析"><a href="#Spring-Data-JPA的内部原理剖析" class="headerlink" title="Spring Data JPA的内部原理剖析"></a>Spring Data JPA的内部原理剖析</h2><pre><code>1.通过JdkDynamicAopProxy的invoke方法创建了一个动态代理对象
+2.SimpleJpaRepository当中封装了JPA的操作（借助JPA的api完成数据库的CRUD）
+3.通过hibernate完成数据库操作（封装了jdbc）</code></pre><p><img src="https://i.loli.net/2019/10/12/2TBLtEy38fdwpGj.png" alt="2.png"></p>
+<h2 id="复杂查询"><a href="#复杂查询" class="headerlink" title="复杂查询"></a>复杂查询</h2><h3 id="1-借助接口中定义好的方法完成查询"><a href="#1-借助接口中定义好的方法完成查询" class="headerlink" title="1.借助接口中定义好的方法完成查询"></a>1.借助接口中定义好的方法完成查询</h3><p><strong>继承JpaRepository后的方法列表</strong><br><img src="https://i.loli.net/2019/10/12/axjW6IwtS8OCniG.png" alt="3.png"></p>
+<pre><code>/**
+ * 测试统计查询:查询客户总数量
+ *      count:统计总条数
+ */
+@Test
+public void testCount() {
+    long count = customerDao.count();
+    System.out.println(count);
+}
+
+/**
+ * 判断id为4的客户是否存在
+ */
+@Test
+public void testExists() {
+    boolean b = customerDao.exists(6l);
+    System.out.println(b);
+}
+
+/**
+ * 根据id查询
+ *  保证getOne正常运行
+ *
+ *  findOne:
+ *      em.find()  立即加载
+ *  getOne:
+ *      em.getReference()  延迟加载
+ *          返回的是一个客户的动态代理对象
+ *          随用随查询
+ */
+@Test
+@Transactional
+public void testGetOne() {
+    Customer customer = customerDao.getOne(4l);
+    System.out.println(customer);
+}</code></pre><p><strong>继承JpaSpecificationExecutor的方法列表</strong><br><img src="https://i.loli.net/2019/10/12/CKGkEcqW4xJydi1.png" alt="4.png"></p>
+<h3 id="2-jpql的查询方式"><a href="#2-jpql的查询方式" class="headerlink" title="2.jpql的查询方式"></a>2.jpql的查询方式</h3><p>jpql:Jpa query language(jpa查询语言)<br>特点:语法或关键字和sql语句类似,查询的是类和类中属性</p>
+<p>需要将JPQL语句配置到接口方法上<br>1.特有的查询L需要在dao接口上配置方法<br>2.在新添加的方法上，使用注解的形式配置jpql查询语句<br>3.注解 ： @Query</p>
+<pre><code>/**
+ * 案例:根据客户名称查询客户
+ *      使用jpql形式查询
+ *  jpql:from Customer where custName = ?
+ *
+ *  配置jpql语句,使用@Query注解
+ */
+@Query(value = &quot;from Customer where custName = ?&quot;)
+public Customer findJpql(String custName);
+
+/**
+ * 案例:根据客户名称和客户id查询客户
+ * jpql:from Customer where custName = ? and custId = ?
+ *
+ * 对于多个占位符参数
+ *      赋值的时候,默认情况下,占位符位置需要和方法参数中的位置保持一致
+ *
+ * 可以知道占位符参数的位置
+ *  ? 索引的方式,指定此占位的取值来源
+ *  如:from Customer where custName = ?2 and custId = ?1
+ */
+@Query(value = &quot;from Customer where custName = ? and custId = ?&quot;)
+public Customer findCustNameAndId(String name,Long id);
+
+/**
+ * 更新
+ * 案例:根据id,更新客户的名称
+ *      更新4号客户的名称,将名称改为&quot;DIO&quot;
+ *
+ * sql: update cst_customer set cust_name = ? where cust_id = ?
+ * jpql:update Customer set custName = ? where custId = ?
+ *
+ * @Query:代表的是进行查询
+ *      声明此方法是用来更新操作的
+ * @Modifying
+ *      表示当前执行的是一个更新操作
+ *
+ * Spring Data JPA中使用jpql完成更新/删除操作
+ *      需要手动添加事务支持
+ *      默认会结束之后回滚事务
+ *      需要添加@Rollback(value = false)//设置不回滚
+ */
+@Query(value = &quot;update Customer set custName = ?2 where custId = ?1&quot;)
+@Modifying
+public void updateCustomer(Long custId,String custName);</code></pre><h3 id="3-sql语句的查询方式"><a href="#3-sql语句的查询方式" class="headerlink" title="3.sql语句的查询方式"></a>3.sql语句的查询方式</h3><p>1.特有的查询L需要在dao接口上配置方法<br>2.在新添加的方法上，使用注解的形式配置jpql查询语句<br>3.注解 ： @Query</p>
+<pre><code>@Query
+value:jpql语句|sql语句
+nativaQuery:false(使用jpql)|true(使用本地查询--sql查询)
+    是否使用本地查询</code></pre><p>代码:</p>
+<pre><code>/**
+ * 使用sql的形式查询
+ *      查询全部的客户
+ * sql:select * from cst_customer
+ *      value:sql
+ *      nativeQuery:true--sql
+ */
+@Query(value = &quot;select * from cst_customer&quot;,nativeQuery = true)
+public List&lt;Object []&gt; findSql();
+
+/**
+ * 模糊匹配
+ * @return
+ */
+@Query(value = &quot;select * from cst_customer where cust_name like ?1&quot;,nativeQuery = true)
+public List&lt;Object []&gt; findSql2(String name);</code></pre><h3 id="4-方法名称规则查询"><a href="#4-方法名称规则查询" class="headerlink" title="4.方法名称规则查询"></a>4.方法名称规则查询</h3><p>是对jpql查询更加深入的一层封装,我们只需要按照spring data jpa提供的方法名称规则定义方法,不需要再去配置jpql语句,完成查询</p>
+<pre><code>/**
+ * 方法名的约定:
+ *      findBy:查询
+ *          对象中的属性名(首字母大写):查询的条件
+ * 如:findByCustName---根据客户名称查询
+ *
+ * 在springdatajpa的运行阶段
+ *      会根据方法名称进行解析  findBy  from  xxx(实体类)
+ *                              属性名称    where custName = ?
+ *
+ *  1.findBy + 属性名称(根据属性名称进行完全匹配的查询=)
+ *  2.findBy + 属性名称 + &quot;查询方式(like|isnull)&quot;
+ *      findByCustNameLike
+ *  3.多条件查询
+ *      findBy + 属性名 + &quot;查询方式&quot; + &quot;多条件的连接符(and|or)&quot; + 属性名 + &quot;查询方式&quot;
+ */
+//使用客户名称精准匹配
+public Customer findByCustName(String custName);
+
+//使用客户名称模糊匹配
+public List&lt;Customer&gt; findByCustNameLike(String custName);
+
+//使用客户名称模糊匹配和客户所属行业精准匹配
+public Customer findByCustNameLikeAndCustIndustry(String custName,String custIndustry);</code></pre><h1 id="七-Specifications动态查询"><a href="#七-Specifications动态查询" class="headerlink" title="七.Specifications动态查询"></a>七.Specifications动态查询</h1><p>JpaSpecificationExecutor 方法列表</p>
+<pre><code>T findOne(Specification&lt;T&gt; spec);  //查询单个对象
+
+List&lt;T&gt; findAll(Specification&lt;T&gt; spec);  //查询列表
+
+//查询全部，分页
+//pageable：分页参数
+//返回值：分页pageBean（page：是springdatajpa提供的）
+Page&lt;T&gt; findAll(Specification&lt;T&gt; spec, Pageable pageable);
+
+//查询列表
+//Sort：排序参数
+List&lt;T&gt; findAll(Specification&lt;T&gt; spec, Sort sort);
+
+long count(Specification&lt;T&gt; spec);//统计查询</code></pre><p>Specification ：查询条件</p>
+<pre><code>自定义我们自己的Specification实现类
+    实现
+        //root：查询的根对象（查询的任何属性都可以从根对象中获取）
+        //CriteriaQuery：顶层查询对象，自定义查询方式（了解：一般不用）
+        //CriteriaBuilder：查询的构造器，封装了很多的查询条件
+        Predicate toPredicate(Root&lt;T&gt; root, CriteriaQuery&lt;?&gt; query, CriteriaBuilder cb); //封装查询条件</code></pre><h3 id="查询单个对象"><a href="#查询单个对象" class="headerlink" title="查询单个对象"></a>查询单个对象</h3><pre><code>/**
+ * 根据条件查询单个对象
+ */
+@Test
+public void testSpec() {
+    //匿名内部类
+    /**
+     * 自定义查询条件
+     *      1.实现Specification接口(提供泛型,查询的对象类型)
+     *      2.实现toPredicate方法(构造查询条件)
+     *      3.需要借助方法参数中的两个参数(
+     *          root:获取需要查询的对象属性
+     *          CriteriaBuilder:构造查询条件的,内部封装了很多的查询条件(模糊匹配,精确匹配)
+     *      )
+     *
+     *      案例:根据客户名称查询,查询客户名为kobe的客户
+     *              查询条件:
+     *                  1.查询方式
+     *                      CriteriaBuilder对象
+     *                  2.比较的属性名称
+     *                      root对象
+     */
+    Specification&lt;Customer&gt; spec = new Specification&lt;Customer&gt;() {
+        @Override
+        public Predicate toPredicate(Root&lt;Customer&gt; root, CriteriaQuery&lt;?&gt; criteriaQuery, CriteriaBuilder cb) {
+            //1.获取比较的属性
+            Path&lt;Object&gt; custName = root.get(&quot;custName&quot;);
+            //2.构造查询
+            /**
+             * 第一个参数:需要比较的属性(path对象)
+             * 第二个参数:当前需要比较的取值
+             */
+            Predicate kobe = cb.equal(custName, &quot;kobe&quot;);//精准匹配(比较的属性,比较的属性的取值)
+
+            return kobe;
+        }
+    };
+    Customer customer = customerDao.findOne(spec);
+    System.out.println(customer);
+}</code></pre><h3 id="多条件查询"><a href="#多条件查询" class="headerlink" title="多条件查询"></a>多条件查询</h3><pre><code>/**
+ * 多条件查询
+ *      案例:根据客户名(kokodayo)和客户所属行业查询(射箭)
+ */
+@Test
+public void testSpec2() {
+    Specification&lt;Customer&gt; spec = new Specification&lt;Customer&gt;() {
+        /**
+         *
+         * @param root 获取属性
+         * @param criteriaQuery
+         * @param criteriaBuilder 构造查询
+         *                     1.构造客户名的精准匹配查询
+         *                     2.构造所属行业的精准匹配查询
+         *                     3.联系两个查询
+         * @return
+         */
+        @Override
+        public Predicate toPredicate(Root&lt;Customer&gt; root, CriteriaQuery&lt;?&gt; criteriaQuery, CriteriaBuilder criteriaBuilder) {
+            Path&lt;Object&gt; custName = root.get(&quot;custName&quot;);
+            Path&lt;Object&gt; custIndustry = root.get(&quot;custIndustry&quot;);
+
+            //1.构造客户名的精准匹配查询
+            Predicate predicate1 = criteriaBuilder.equal(custName, &quot;kokodayo&quot;);
+            //2.构造所属行业的精准匹配查询
+            Predicate predicate2 = criteriaBuilder.equal(custIndustry, &quot;射箭&quot;);
+            //3.联系两个查询(满足条件1且满足条件2)
+            Predicate predicate = criteriaBuilder.and(predicate1, predicate2);
+
+            return predicate;
+        }
+    };
+    Customer customer = customerDao.findOne(spec);
+    System.out.println(customer);
+}</code></pre><h3 id="模糊匹配查询列表"><a href="#模糊匹配查询列表" class="headerlink" title="模糊匹配查询列表"></a>模糊匹配查询列表</h3><pre><code>/**
+ * 案例:根据客户名称模糊匹配,返回客户列表
+ *
+ * equal:直接得到path对象(属性),然后进行比较即可
+ * gt,lt,ge,le,like:得到path对象,根据path对象指定比较的参数类型,再比较
+ *      指定参数类型:path.as(类型的字节码对象)
+ */
+@Test
+public void testSpec3() {
+    //构造查询条件
+    Specification&lt;Customer&gt; spec = new Specification&lt;Customer&gt;() {
+        @Override
+        public Predicate toPredicate(Root&lt;Customer&gt; root, CriteriaQuery&lt;?&gt; criteriaQuery, CriteriaBuilder criteriaBuilder) {
+            Path&lt;Object&gt; custName = root.get(&quot;custName&quot;);
+            Predicate like = criteriaBuilder.like(custName.as(String.class), &quot;k%&quot;);
+            return like;
+        }
+    };
+    List&lt;Customer&gt; list = customerDao.findAll(spec);
+    for (Customer customer : list) {
+        System.out.println(customer);
+    }
+}</code></pre><h3 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h3><pre><code>//添加排序
+//创建排序对象 Sort对象
+//参数1:排序的顺序  参数2:排序的属性名称
+Sort sort = new Sort(Sort.Direction.DESC,&quot;custId&quot;);
+List&lt;Customer&gt; list = customerDao.findAll(spec, sort);
+for (Customer customer : list) {
+    System.out.println(customer);
+}</code></pre><h3 id="分页"><a href="#分页" class="headerlink" title="分页"></a>分页</h3><pre><code>/**
+ * 分页查询
+ *      findAll(Specification,Pageable) 带有条件的分页
+ *          Specification:查询条件
+ *          Pageable:查询的页码,每页查询的条数
+ *      findAll(Pageable)没有条件的分页
+ * 返回:Page(springDataJpa为我们封装好的pageBean对象,数据列表,共条数)
+ */
+@Test
+public void testSpec4() {
+    /**
+     * PageRequest是pageable接口的实现类
+     *
+     * 创建PageRequest要调用构造方法传入两个参数
+     *      参数1:当前查询的页数(从0开始)
+     *      参数2:每页查询的数量
+     *
+     */
+    Pageable pageable = new PageRequest(0,2);
+    Page&lt;Customer&gt; page = customerDao.findAll(pageable);
+    System.out.println(page.getContent());//得到数据集合列表
+    System.out.println(page.getTotalPages());//得到总页数
+    System.out.println(page.getTotalElements());//得到总条数
+}</code></pre><h1 id="八-多表之间的关系和操作多表的步骤"><a href="#八-多表之间的关系和操作多表的步骤" class="headerlink" title="八.多表之间的关系和操作多表的步骤"></a>八.多表之间的关系和操作多表的步骤</h1><h3 id="表关系"><a href="#表关系" class="headerlink" title="表关系:"></a>表关系:</h3><pre><code>一对一  
+一对多:
+    一的一方:主表
+    多的一方:从表
+    外键:需要在从表新建一列作为外键,他的取值来源于主表的主键
+多对多:
+    中间表:中间表最少应该由两个字段组成,这两个字段作为外键指向两张表的主键,同时这两个字段又组成了联合主键</code></pre><h3 id="实体类中的关系"><a href="#实体类中的关系" class="headerlink" title="实体类中的关系:"></a>实体类中的关系:</h3><pre><code>包含关系:可以通过实体类中的包含关系描述表关系
+继承关系
+
+分析步骤
+    1.明确表关系
+    2.确定表关系（描述 外键|中间表）
+    3.编写实体类，再实体类中描述表关系（包含关系）
+    4.配置映射关系</code></pre><h1 id="九-多表操作"><a href="#九-多表操作" class="headerlink" title="九.多表操作"></a>九.多表操作</h1><h2 id="1-一对多操作"><a href="#1-一对多操作" class="headerlink" title="1.一对多操作"></a>1.一对多操作</h2><pre><code>案例:客户和联系人的案例(一对多)
+    客户:一家公司
+    联系人:这家公司的员工
+
+一个客户可以具有多个联系人
+一个联系人从属于一家公司
+
+
+分析步骤
+    1.明确表关系
+        一对多
+    2.确定表关系（描述 外键|中间表）
+        主表:客户表
+        从表:联系人表
+            在从表上添加外键(主表的主键)
+    3.编写实体类，再实体类中描述表关系（包含关系）
+        客户:在客户的实体类中包含一个联系人的集合
+        联系人:在联系人的实体类中包含一个客户的对象
+    4.配置映射关系
+        使用jpa注解配置一对多映射关系</code></pre><p><strong>在客户中配置联系人(一对多):</strong></p>
+<pre><code>//配置客户和联系人之间的关系(一对多)
+/**
+ * 使用注解配置多表关系
+ *      1.声明关系
+ *          @OneToMany:配置一对多关系
+ *              targetEntity:对方对象的字节码对象
+ *      2.配置外键(中间表)
+ *          @JoinColumn:配置外键
+ *              name:外键字段名称
+ *              referencedColumnName:参照的主表主键的名称
+ *
+ * 在客户实体类上(一)添加了外键配置,所以对于客户而言,客户具有了维护外键的作用
+ */
+@OneToMany(targetEntity = LinkMan.class)
+@JoinColumn(name = &quot;lkm_cust_id&quot;,referencedColumnName = &quot;cust_id&quot;)
+private Set&lt;LinkMan&gt; linkMans = new HashSet&lt;&gt;();</code></pre><p><strong>在联系人中配置客户(一对多):</strong></p>
+<pre><code>/**
+ * 配置联系人到客户的多对一关系
+ *      使用注解的形式配置多对一关系
+ *      1.配置表关系
+ *          @ManyToOne:配置多对一关系
+ *              targetEntity:对方的实体类字节码
+ *      2.配置外键(中间表)
+ *          @JoinColumn:配置外键
+ *              name:外键字段名称
+ *              referencedColumnName:参照的主表主键的名称
+ *
+ * 配置外键的过程:配置到了多的一方,就会在多的一方维护外键
+ *
+ */
+@ManyToOne(targetEntity = Customer.class)
+@JoinColumn(name = &quot;lkm_cust_id&quot;,referencedColumnName = &quot;cust_id&quot;)
+private Customer customer;</code></pre><p><strong>测试的时候,要注意创建实体类之间的关系:</strong></p>
+<pre><code>/**
+ * 保存一个客户,保存一个联系人
+ * 效果:客户和联系人作为独立的数据保存到数据库中
+ *      联系人外键为空
+ * 原因:
+ *      实体类中没有配置关系
+ *
+ */
+@Test
+@Transactional//配置事务
+@Rollback(value = false)
+public void testAdd() {
+    //创建一个客户,创建一个联系人
+    Customer customer = new Customer();
+    customer.setCustName(&quot;Lakers&quot;);
+
+    LinkMan linkMan = new LinkMan();
+    linkMan.setLkmName(&quot;kobe&quot;);
+
+    //配置关系
+    customer.getLinkMans().add(linkMan);
+
+    //保存
+    customerDao.save(customer);
+    linkManDao.save(linkMan);
+}</code></pre><p><strong>注意:以下例子(一)和(多)都对外键进行了操作</strong></p>
+<pre><code>/**
+ *会有一条多余的update语句出来
+ *      由于一的一方可以维护外键,会发送update语句
+ *      解决方案:一的一方放弃维护权
+ */
+@Test
+@Transactional//配置事务
+@Rollback(value = false)
+public void testAdd3() {
+    //创建一个客户,创建一个联系人
+    Customer customer = new Customer();
+    customer.setCustName(&quot;Lakers&quot;);
+
+    LinkMan linkMan = new LinkMan();
+    linkMan.setLkmName(&quot;kobe&quot;);
+
+
+    linkMan.setCustomer(customer);//由于配置了多到一的关联关系(当保存的时候就已经对外键赋值)
+    customer.getLinkMans().add(linkMan);//由于配置了一到多的关联关系(发送一条update语句)
+
+    //保存
+    customerDao.save(customer);
+    linkManDao.save(linkMan);
+}</code></pre><p><strong>解决方案:去客户类(一)中修改以下配置,放弃维护权</strong></p>
+<pre><code>/**
+ * 放弃外键维护权
+ *      mappedBy:对方配置关系的属性名称
+  */
+@OneToMany(mappedBy = &quot;customer&quot;)
+private Set&lt;LinkMan&gt; linkMans = new HashSet&lt;&gt;();</code></pre><p>此时多余的update语句已消失.<br><img src="https://i.loli.net/2019/10/12/RwOY72jZqJhF4Ld.png" alt="5.png"></p>
+<h3 id="删除操作的说明如下："><a href="#删除操作的说明如下：" class="headerlink" title="删除操作的说明如下："></a>删除操作的说明如下：</h3><p><strong>删除从表数据：可以随时任意删除。</strong></p>
+<p>删除主表数据：</p>
+<p><strong>有从表数据</strong><br>  1、在默认情况下，它会把外键字段置为null，然后删除主表数据。如果在数据库的表                结构上，外键字段有非空约束，默认情况就会报错了。<br>  2、如果配置了放弃维护关联关系的权利，则不能删除（与外键字段是否允许为null，        没有关系）因为在删除时，它根本不会去更新从表的外键字段了。<br>  3、如果还想删除，使用级联删除引用</p>
+<h3 id="级联操作"><a href="#级联操作" class="headerlink" title="级联操作"></a>级联操作</h3><p>级联操作：指操作一个对象同时操作它的关联对象  </p>
+<pre><code>1.需要区分操作主体
+2.需要在操作主体的实体类上,添加级联属性(添加到多表映射关系的注解上)
+3.@cascade(配置级联)</code></pre><h2 id="2-多对多操作"><a href="#2-多对多操作" class="headerlink" title="2.多对多操作"></a>2.多对多操作</h2><pre><code>案例:用户和角色(多对多)
+    用户:
+    角色:
+
+分析步骤
+    1.明确表关系
+        一对多
+    2.确定表关系（描述 外键|中间表）
+        中间表
+    3.编写实体类，再实体类中描述表关系（包含关系）
+        用户:包含角色的集合
+        角色:包含用户的集合
+    4.配置映射关系</code></pre><p><strong>配置用户到角色的多对多关系:</strong></p>
+<pre><code>/**
+ *配置用户到角色的多对多关系
+ *
+ * 配置多对多映射关系:
+ *      1.声明表关系的配置
+ *          @ManyToMany(targetEntity = Role.class)
+ *              targetEntity:代表对方的实体类字节码
+ *      2.配置中间表(包含两个外键)
+ *          @JoinTable
+ *              name:中间表的名称
+ *              joinColumns:当前对象在中间表中的外键
+ *                  @JoinColumn的数组
+ *                      name:中间表的外键名
+ *                      referencedColumnName:参照的主表的主键名
+ *              inverseJoinColumns:对方对象在中间表的外键
+ *                  @JoinColumn的数组
+ *                      name:中间表的外键名
+ *                      referencedColumnName:参照的主表的主键名
+ */
+@ManyToMany(targetEntity = Role.class)
+@JoinTable(name = &quot;sys_user_role&quot;,
+    //joinColumns:当前对象在中间表中的外键
+    joinColumns = {@JoinColumn(name = &quot;sys_user_id&quot;,referencedColumnName = &quot;user_id&quot;)},
+    //inverseJoinColumns:对方对象在中间表的外键
+    inverseJoinColumns = {@JoinColumn(name = &quot;sys_role_id&quot;,referencedColumnName = &quot;role_id&quot;)}
+)
+private Set&lt;Role&gt; roles = new HashSet&lt;&gt;();</code></pre><p><strong>配置角色到用户的多对多关系:(放弃维护权)</strong></p>
+<pre><code>/**
+ *配置角色到用户的多对多关系
+ */
+@ManyToMany(mappedBy = &quot;roles&quot;)
+private Set&lt;User&gt; users = new HashSet&lt;&gt;();</code></pre><p><strong>Test:</strong></p>
+<pre><code>/**
+ * 保存一个用户,保存一个角色
+ *
+ * 多对多中放弃维护权:被动的一方放弃
+ */
+@Test
+@Transactional
+@Rollback(false)
+public void testAdd() {
+    User user = new User();
+    user.setUserName(&quot;kobe&quot;);
+
+    Role role = new Role();
+    role.setRoleName(&quot;basketball player&quot;);
+
+    //配置用户到角色的关系,可以对中间表中的数据进行维护
+    user.getRoles().add(role);
+    //配置角色到用户的关系
+    role.getUsers().add(user);
+
+    userDao.save(user);
+    roleDao.save(role);
+
+}
+
+//级联
+/**
+ * 级联添加(保存一个用户的同时保存用户的管理角色)
+ */
+@Test
+@Transactional
+@Rollback(false)
+public void testCascadeAdd() {
+    User user = new User();
+    user.setUserName(&quot;kobe&quot;);
+
+    Role role = new Role();
+    role.setRoleName(&quot;basketball player&quot;);
+
+    //配置用户到角色的关系,可以对中间表中的数据进行维护
+    user.getRoles().add(role);
+
+    userDao.save(user);
+}
+
+/**
+ * 级联删除:删除id为1的用户,同时删除他的关联角色
+ */
+@Test
+@Transactional
+@Rollback(false)
+public void testCascadeDelete() {
+    userDao.delete(1l);
+}</code></pre><h2 id="3-多表的查询"><a href="#3-多表的查询" class="headerlink" title="3.多表的查询"></a>3.多表的查询</h2><h3 id="对象导航查询"><a href="#对象导航查询" class="headerlink" title="对象导航查询"></a>对象导航查询</h3><p><strong>从一查多:</strong></p>
+<pre><code>查询一个对象的同时,通过此对象查询他的关联对象
+
+案例:客户与联系人
+
+//could not initialize proxy - no Session
+//测试对象导航查询(get方式)
+/**
+ * 对象导航查询:
+ * 默认使用的是延迟加载形式查询:
+ *      调用get方法并不会立即发送查询,而是在使用关联对象的时候才会查询
+ *
+ * 如要使用立即加载:
+ *      修改配置fetch,配置到多表映射关系的注解上
+ *      fetch:配置关联对象的加载方式
+ *          EAGER:立即加载
+ *          LAZY:延迟加载
+ */
+@Test
+@Transactional//解决no Session问题
+public void testQuery1() {
+    //查询id为1的客户
+    Customer customer = customerDao.getOne(1l);
+    //对象导航查询,此客户下的所有联系人
+    Set&lt;LinkMan&gt; linkMans = customer.getLinkMans();
+    for (LinkMan linkMan : linkMans) {
+        System.out.println(linkMan);
+    }
+}</code></pre><p><strong>从多查一:</strong></p>
+<pre><code>/**
+ * 从联系人对象查询客户对象
+ *      默认:立即加载
+ *  如要使用延迟加载:
+ *      在主体(联系人)的多对一种添加fetch配置(LAZY)
+ */
+@Test
+@Transactional//解决no Session问题
+public void testQuery3() {
+    //获取id为2的联系人
+    LinkMan linkMan = linkManDao.findOne(2l);
+    //对象导航查询所属客户
+    Customer customer = linkMan.getCustomer();
+    System.out.println(customer);
+}</code></pre><p><strong>总结:</strong></p>
+<pre><code>从一查多
+    默认:使用延迟加载
+
+从多查一
+    默认:使用立即加载</code></pre>
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/Spring-Data-JPA/" rel="tag"># Spring Data JPA</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/10/12/Oracle学习笔记/" rel="next" title="Oracle学习笔记">
+                  <i class="fa fa-chevron-left"></i> Oracle学习笔记
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    
+    <div class="comments" id="comments"></div>
+  
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一-ORM思想"><span class="nav-number">1.</span> <span class="nav-text">一.ORM思想</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#主要目的-操作实体类就相当于操作数据库表"><span class="nav-number">1.1.</span> <span class="nav-text">主要目的:操作实体类就相当于操作数据库表</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二-hibernate框架介绍"><span class="nav-number">2.</span> <span class="nav-text">二.hibernate框架介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Hibernate是一个开放源代码的对象关系映射框架"><span class="nav-number">2.0.1.</span> <span class="nav-text">Hibernate是一个开放源代码的对象关系映射框架</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#它对JDBC进行了非常轻量级的对象封装"><span class="nav-number">2.0.2.</span> <span class="nav-text">它对JDBC进行了非常轻量级的对象封装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#它将POJO与数据库表建立映射关系，是一个全自动的orm框架"><span class="nav-number">2.0.3.</span> <span class="nav-text">它将POJO与数据库表建立映射关系，是一个全自动的orm框架</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hibernate可以自动生成SQL语句，自动执行，使得Java程序员可以随心所欲的使用对象编程思维来操纵数据库。"><span class="nav-number">2.0.4.</span> <span class="nav-text">hibernate可以自动生成SQL语句，自动执行，使得Java程序员可以随心所欲的使用对象编程思维来操纵数据库。</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三-JPA规范"><span class="nav-number">3.</span> <span class="nav-text">三.JPA规范</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JPA的优势"><span class="nav-number">3.1.</span> <span class="nav-text">JPA的优势</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JPA与hibernate的关系"><span class="nav-number">3.2.</span> <span class="nav-text">JPA与hibernate的关系</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#四-JPA的基本操作"><span class="nav-number">4.</span> <span class="nav-text">四.JPA的基本操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#搭建环境的过程"><span class="nav-number">4.1.</span> <span class="nav-text">搭建环境的过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建maven工程导入坐标"><span class="nav-number">4.1.1.</span> <span class="nav-text">创建maven工程导入坐标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置jpa的核心配置文件"><span class="nav-number">4.1.2.</span> <span class="nav-text">配置jpa的核心配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编写客户的实体类"><span class="nav-number">4.1.3.</span> <span class="nav-text">编写客户的实体类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置实体类和表-类中属性和表中字段的映射关系"><span class="nav-number">4.1.4.</span> <span class="nav-text">配置实体类和表,类中属性和表中字段的映射关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#保存客户到数据库中"><span class="nav-number">4.1.5.</span> <span class="nav-text">保存客户到数据库中</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结-jpa操作的基本步骤"><span class="nav-number">4.2.</span> <span class="nav-text">总结:jpa操作的基本步骤:</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-加载配置文件创建实体管理器工厂"><span class="nav-number">4.2.1.</span> <span class="nav-text">1.加载配置文件创建实体管理器工厂</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-根据实体管理器工厂-创建实体管理器"><span class="nav-number">4.2.2.</span> <span class="nav-text">2.根据实体管理器工厂,创建实体管理器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-根据实体管理器创建事务对象-开启事务"><span class="nav-number">4.2.3.</span> <span class="nav-text">3.根据实体管理器创建事务对象,开启事务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-增删改查操作"><span class="nav-number">4.2.4.</span> <span class="nav-text">4.增删改查操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-提交事务"><span class="nav-number">4.2.5.</span> <span class="nav-text">5. 提交事务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-释放资源"><span class="nav-number">4.2.6.</span> <span class="nav-text">6. 释放资源</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#根据id进行查询"><span class="nav-number">4.2.6.1.</span> <span class="nav-text">根据id进行查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除客户"><span class="nav-number">4.2.6.2.</span> <span class="nav-text">删除客户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#客户的更新"><span class="nav-number">4.2.6.3.</span> <span class="nav-text">客户的更新</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#五-JPQL查询"><span class="nav-number">5.</span> <span class="nav-text">五.JPQL查询</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JPQL全称Java-Persistence-Query-Language"><span class="nav-number">5.0.1.</span> <span class="nav-text">JPQL全称Java Persistence Query Language</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-查询全部"><span class="nav-number">5.1.</span> <span class="nav-text">1.查询全部</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-分页查询"><span class="nav-number">5.2.</span> <span class="nav-text">2.分页查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-统计查询"><span class="nav-number">5.3.</span> <span class="nav-text">3.统计查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-条件查询"><span class="nav-number">5.4.</span> <span class="nav-text">4.条件查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-排序"><span class="nav-number">5.5.</span> <span class="nav-text">5.排序</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#六-Spring-Data-JPA"><span class="nav-number">6.</span> <span class="nav-text">六.Spring Data JPA</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#快速入门"><span class="nav-number">6.1.</span> <span class="nav-text">快速入门</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-搭建环境"><span class="nav-number">6.1.1.</span> <span class="nav-text">1.搭建环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-编写一个符合spring-Data-Jpa的dao层接口"><span class="nav-number">6.1.2.</span> <span class="nav-text">2.编写一个符合spring Data Jpa的dao层接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-测试类编写"><span class="nav-number">6.1.3.</span> <span class="nav-text">3.测试类编写</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">6.1.3.1.</span> <span class="nav-text">总结:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-Data-JPA的内部原理剖析"><span class="nav-number">6.2.</span> <span class="nav-text">Spring Data JPA的内部原理剖析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复杂查询"><span class="nav-number">6.3.</span> <span class="nav-text">复杂查询</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-借助接口中定义好的方法完成查询"><span class="nav-number">6.3.1.</span> <span class="nav-text">1.借助接口中定义好的方法完成查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-jpql的查询方式"><span class="nav-number">6.3.2.</span> <span class="nav-text">2.jpql的查询方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-sql语句的查询方式"><span class="nav-number">6.3.3.</span> <span class="nav-text">3.sql语句的查询方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-方法名称规则查询"><span class="nav-number">6.3.4.</span> <span class="nav-text">4.方法名称规则查询</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#七-Specifications动态查询"><span class="nav-number">7.</span> <span class="nav-text">七.Specifications动态查询</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查询单个对象"><span class="nav-number">7.0.1.</span> <span class="nav-text">查询单个对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多条件查询"><span class="nav-number">7.0.2.</span> <span class="nav-text">多条件查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模糊匹配查询列表"><span class="nav-number">7.0.3.</span> <span class="nav-text">模糊匹配查询列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#排序"><span class="nav-number">7.0.4.</span> <span class="nav-text">排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分页"><span class="nav-number">7.0.5.</span> <span class="nav-text">分页</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#八-多表之间的关系和操作多表的步骤"><span class="nav-number">8.</span> <span class="nav-text">八.多表之间的关系和操作多表的步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#表关系"><span class="nav-number">8.0.1.</span> <span class="nav-text">表关系:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实体类中的关系"><span class="nav-number">8.0.2.</span> <span class="nav-text">实体类中的关系:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#九-多表操作"><span class="nav-number">9.</span> <span class="nav-text">九.多表操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-一对多操作"><span class="nav-number">9.1.</span> <span class="nav-text">1.一对多操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#删除操作的说明如下："><span class="nav-number">9.1.1.</span> <span class="nav-text">删除操作的说明如下：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#级联操作"><span class="nav-number">9.1.2.</span> <span class="nav-text">级联操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-多对多操作"><span class="nav-number">9.2.</span> <span class="nav-text">2.多对多操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-多表的查询"><span class="nav-number">9.3.</span> <span class="nav-text">3.多表的查询</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#对象导航查询"><span class="nav-number">9.3.1.</span> <span class="nav-text">对象导航查询</span></a></li></ol></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/1.gif"
+      alt="月月鸟">
+  <p class="site-author-name" itemprop="name">月月鸟</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/yourname" title="GitHub &rarr; https://github.com/yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="/903286240@qq.com" title="E-Mail &rarr; 903286240@qq.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+
+      </div>
+	  
+	  <div id="music163player">
+		<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=524149927&auto=1&height=66">
+		</iframe>
+	  </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">月月鸟</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">100k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">1:31</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+    
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='200' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.1"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '7hWmSrhY0rne8BX9kLc1waeP-gzGzoHsz',
+    appKey: 'xoHWFrk6WDuBSi6M83Iy25vl',
+    placeholder: '香港是中国的!',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":200,"height":400},"mobile":{"show":true},"react":{"opacity":0.7}});</script></body>
+</html>
