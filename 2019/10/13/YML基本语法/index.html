@@ -63,7 +63,7 @@
 <meta property="og:site_name" content="月月鸟的个人博客">
 <meta property="og:description" content="YML语法：1、基本语法k:(空格)v：表示一对键值对（空格必须有）；以空格的缩进来控制层级关系；只要是左对齐的一列数据，都是同一个层级的123server:    port: 8081    path: /hello属性和值也是大小写敏感；2、值的写法字面量：普通的值（数字，字符串，布尔）k: v：字面直接来写；      字符串默认不用加上单引号或者双引号；      &amp;quot;&amp;quot;">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-10-13T13:00:49.023Z">
+<meta property="og:updated_time" content="2019-10-13T13:29:20.854Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="YML基本语法">
 <meta name="twitter:description" content="YML语法：1、基本语法k:(空格)v：表示一对键值对（空格必须有）；以空格的缩进来控制层级关系；只要是左对齐的一列数据，都是同一个层级的123server:    port: 8081    path: /hello属性和值也是大小写敏感；2、值的写法字面量：普通的值（数字，字符串，布尔）k: v：字面直接来写；      字符串默认不用加上单引号或者双引号；      &amp;quot;&amp;quot;">
@@ -287,7 +287,7 @@
                 
               
 
-              <time title="创建时间：2019-10-13 20:53:34 / 修改时间：21:00:49" itemprop="dateCreated datePublished" datetime="2019-10-13T20:53:34+08:00">2019-10-13</time>
+              <time title="创建时间：2019-10-13 20:53:34 / 修改时间：21:29:20" itemprop="dateCreated datePublished" datetime="2019-10-13T20:53:34+08:00">2019-10-13</time>
             </span>
           
             
@@ -337,7 +337,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span>636</span>
+              <span>1.6k</span>
             </span>
           
             <span class="post-meta-item" title="阅读时长">
@@ -387,6 +387,17 @@
 
 <p>行内写法</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">pets:</span> <span class="string">[cat,dog,pig]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="配置文件值注入"><a href="#配置文件值注入" class="headerlink" title="配置文件值注入"></a>配置文件值注入</h2><p>配置文件</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">person:</span></span><br><span class="line"><span class="attr">    lastName:</span> <span class="string">hello</span></span><br><span class="line"><span class="attr">    age:</span> <span class="number">18</span></span><br><span class="line"><span class="attr">    boss:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">    birth:</span> <span class="number">2017</span><span class="string">/12/12</span></span><br><span class="line"><span class="attr">    maps:</span> <span class="string">&#123;k1:</span> <span class="string">v1,k2:</span> <span class="number">12</span><span class="string">&#125;</span></span><br><span class="line"><span class="attr">    lists:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">lisi</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">zhaoliu</span></span><br><span class="line"><span class="attr">    dog:</span></span><br><span class="line"><span class="attr">      name:</span> <span class="string">小狗</span></span><br><span class="line"><span class="attr">      age:</span> <span class="number">12</span></span><br></pre></td></tr></table></figure>
+
+<p>javaBean：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 将配置文件中配置的每一个属性的值，映射到这个组件中</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@ConfigurationProperties</span>：告诉SpringBoot将本类中的所有属性和配置文件中相关的配置进行绑定；</span></span><br><span class="line"><span class="comment"> *      prefix = "person"：配置文件中哪个下面的所有属性进行一一映射</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 只有这个组件是容器中的组件，才能容器提供的<span class="doctag">@ConfigurationProperties</span>功能；</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@ConfigurationProperties</span>(prefix = <span class="string">"person"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String lastName;</span><br><span class="line">    <span class="keyword">private</span> Integer age;</span><br><span class="line">    <span class="keyword">private</span> Boolean boss;</span><br><span class="line">    <span class="keyword">private</span> Date birth;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Map&lt;String,Object&gt; maps;</span><br><span class="line">    <span class="keyword">private</span> List&lt;Object&gt; lists;</span><br><span class="line">    <span class="keyword">private</span> Dog dog;</span><br></pre></td></tr></table></figure>
+
+<p>我们可以导入配置文件处理器，以后编写配置就有提示了</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--导入配置文件处理器，配置文件进行绑定就会有提示--&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-configuration-processor<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">optional</span>&gt;</span>true<span class="tag">&lt;/<span class="name">optional</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
     </div>
 
     
@@ -470,7 +481,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#YML语法："><span class="nav-number">1.</span> <span class="nav-text">YML语法：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、基本语法"><span class="nav-number">1.1.</span> <span class="nav-text">1、基本语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、值的写法"><span class="nav-number">1.2.</span> <span class="nav-text">2、值的写法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#字面量：普通的值（数字，字符串，布尔）"><span class="nav-number">1.2.1.</span> <span class="nav-text">字面量：普通的值（数字，字符串，布尔）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对象、Map（属性和值）（键值对）："><span class="nav-number">1.2.2.</span> <span class="nav-text">对象、Map（属性和值）（键值对）：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数组（List、Set）："><span class="nav-number">1.2.3.</span> <span class="nav-text">数组（List、Set）：</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#YML语法："><span class="nav-number">1.</span> <span class="nav-text">YML语法：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、基本语法"><span class="nav-number">1.1.</span> <span class="nav-text">1、基本语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、值的写法"><span class="nav-number">1.2.</span> <span class="nav-text">2、值的写法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#字面量：普通的值（数字，字符串，布尔）"><span class="nav-number">1.2.1.</span> <span class="nav-text">字面量：普通的值（数字，字符串，布尔）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对象、Map（属性和值）（键值对）："><span class="nav-number">1.2.2.</span> <span class="nav-text">对象、Map（属性和值）（键值对）：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数组（List、Set）："><span class="nav-number">1.2.3.</span> <span class="nav-text">数组（List、Set）：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置文件值注入"><span class="nav-number">2.</span> <span class="nav-text">配置文件值注入</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -579,12 +590,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">100k</span>
+    <span title="站点总字数">102k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">1:31</span>
+    <span title="站点阅读时长">1:32</span>
 </div>
 
         
