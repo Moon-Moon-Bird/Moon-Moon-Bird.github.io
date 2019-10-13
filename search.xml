@@ -1,6 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>YML基本语法</title>
+    <url>/2019/10/13/YML%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/</url>
+    <content><![CDATA[<h2 id="YML语法："><a href="#YML语法：" class="headerlink" title="YML语法："></a>YML语法：</h2><h3 id="1、基本语法"><a href="#1、基本语法" class="headerlink" title="1、基本语法"></a>1、基本语法</h3><p>k:(空格)v：表示一对键值对（空格必须有）；</p><p>以<strong>空格</strong>的缩进来控制层级关系；只要是左对齐的一列数据，都是同一个层级的</p><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line"><span class="attr">    port:</span> <span class="number">8081</span></span><br><span class="line"><span class="attr">    path:</span> <span class="string">/hello</span></span><br></pre></td></tr></table></figure><p>属性和值也是大小写敏感；</p><h3 id="2、值的写法"><a href="#2、值的写法" class="headerlink" title="2、值的写法"></a>2、值的写法</h3><h4 id="字面量：普通的值（数字，字符串，布尔）"><a href="#字面量：普通的值（数字，字符串，布尔）" class="headerlink" title="字面量：普通的值（数字，字符串，布尔）"></a>字面量：普通的值（数字，字符串，布尔）</h4><pre><code>k: v：字面直接来写；
+
+    字符串默认不用加上单引号或者双引号；
+
+    &quot;&quot;：双引号；不会转义字符串里面的特殊字符；特殊字符会作为本身想表示的意思
+
+            name:   &quot;zhangsan \n lisi&quot;：输出；zhangsan 换行  lisi
+
+    &apos;&apos;：单引号；会转义特殊字符，特殊字符最终只是一个普通的字符串数据
+
+            name:   ‘zhangsan \n lisi’：输出；zhangsan \n  lisi</code></pre><a id="more"></a>
+
+
+
+
+<h4 id="对象、Map（属性和值）（键值对）："><a href="#对象、Map（属性和值）（键值对）：" class="headerlink" title="对象、Map（属性和值）（键值对）："></a>对象、Map（属性和值）（键值对）：</h4><pre><code>k: v：在下一行来写对象的属性和值的关系；注意缩进
+
+    对象还是k: v的方式</code></pre><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">friends:</span></span><br><span class="line">		<span class="attr">lastName:</span> <span class="string">zhangsan</span></span><br><span class="line">		<span class="attr">age:</span> <span class="number">20</span></span><br></pre></td></tr></table></figure>
+
+<p>行内写法：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">friends:</span> <span class="string">&#123;lastName:</span> <span class="string">zhangsan,age:</span> <span class="number">18</span><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="数组（List、Set）："><a href="#数组（List、Set）：" class="headerlink" title="数组（List、Set）："></a>数组（List、Set）：</h4><p>用- 值表示数组中的一个元素</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">pets:</span></span><br><span class="line"><span class="bullet"> -</span> <span class="string">cat</span></span><br><span class="line"><span class="bullet"> -</span> <span class="string">dog</span></span><br><span class="line"><span class="bullet"> -</span> <span class="string">pig</span></span><br></pre></td></tr></table></figure>
+
+<p>行内写法</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">pets:</span> <span class="string">[cat,dog,pig]</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>标记语言</category>
+      </categories>
+      <tags>
+        <tag>yml</tag>
+        <tag>yaml</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Spring Data JPA</title>
     <url>/2019/10/12/Spring-Data-JPA/</url>
     <content><![CDATA[<h1 id="一-ORM思想"><a href="#一-ORM思想" class="headerlink" title="一.ORM思想"></a>一.ORM思想</h1><h2 id="主要目的-操作实体类就相当于操作数据库表"><a href="#主要目的-操作实体类就相当于操作数据库表" class="headerlink" title="主要目的:操作实体类就相当于操作数据库表"></a>主要目的:操作实体类就相当于操作数据库表</h2><pre><code>建立两个映射关系:
