@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>springboot中的content-path问题</title>
+    <url>/2019/10/14/springboot%E4%B8%AD%E7%9A%84content-path%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<p> 今天在yml配置中设置了server.context-path,运行起来后发现不生效;</p>
+<p>不生效的原因:原来spring boot2.0之后，上下文的配置改为了server.servlet.context-path </p>
+<p><code>server.servlet.context-path=/boot</code></p>
+]]></content>
+      <categories>
+        <category>坑</category>
+      </categories>
+      <tags>
+        <tag>SpringBoot</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>YML基本语法</title>
     <url>/2019/10/13/YML%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/</url>
     <content><![CDATA[<h2 id="YML语法："><a href="#YML语法：" class="headerlink" title="YML语法："></a>YML语法：</h2><h3 id="1、基本语法"><a href="#1、基本语法" class="headerlink" title="1、基本语法"></a>1、基本语法</h3><p>k:(空格)v：表示一对键值对（空格必须有）；</p><p>以<strong>空格</strong>的缩进来控制层级关系；只要是左对齐的一列数据，都是同一个层级的</p><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line"><span class="attr">    port:</span> <span class="number">8081</span></span><br><span class="line"><span class="attr">    path:</span> <span class="string">/hello</span></span><br></pre></td></tr></table></figure><p>属性和值也是大小写敏感；</p><h3 id="2、值的写法"><a href="#2、值的写法" class="headerlink" title="2、值的写法"></a>2、值的写法</h3><h4 id="字面量：普通的值（数字，字符串，布尔）"><a href="#字面量：普通的值（数字，字符串，布尔）" class="headerlink" title="字面量：普通的值（数字，字符串，布尔）"></a>字面量：普通的值（数字，字符串，布尔）</h4><pre><code>k: v：字面直接来写；
