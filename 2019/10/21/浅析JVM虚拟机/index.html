@@ -78,7 +78,8 @@
 <meta property="og:image" content="https://i.loli.net/2019/10/21/X3sgSkhRpvoB5UA.png">
 <meta property="og:image" content="https://i.loli.net/2019/10/21/nadQpM9WY2CK8Os.png">
 <meta property="og:image" content="https://i.loli.net/2019/10/21/49EQ7azyYJmcRHC.png">
-<meta property="og:updated_time" content="2019-10-21T14:22:06.760Z">
+<meta property="og:image" content="https://i.loli.net/2019/10/29/67N2YpXOwfTCqGz.png">
+<meta property="og:updated_time" content="2019-10-29T06:43:18.804Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="浅析JVM虚拟机">
 <meta name="twitter:description" content="JVM体系结构概览:1.类加载器ClassLoader​    赋值加载class文件,class文件在文件开头有特定的文件标示,将class文件字节码内容加载到内存中,并将这些内容转换成方法区中的运行时数据结构并且ClassLoader只负责class文件的加载,只与它是否可以运行,由Execution Engine决定">
@@ -303,11 +304,19 @@
                 
               
 
-              <time title="创建时间：2019-10-21 22:14:34 / 修改时间：22:22:06" itemprop="dateCreated datePublished" datetime="2019-10-21T22:14:34+08:00">2019-10-21</time>
+              <time title="创建时间：2019-10-21 22:14:34" itemprop="dateCreated datePublished" datetime="2019-10-21T22:14:34+08:00">2019-10-21</time>
             </span>
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-29 14:43:18" itemprop="dateModified" datetime="2019-10-29T14:43:18+08:00">2019-10-29</time>
+              </span>
             
           
             <span class="post-meta-item">
@@ -353,7 +362,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span>5.2k</span>
+              <span>7.1k</span>
             </span>
           
             <span class="post-meta-item" title="阅读时长">
@@ -363,7 +372,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span>5 分钟</span>
+              <span>6 分钟</span>
             </span>
           
 
@@ -511,6 +520,28 @@
 <p><img src="https://i.loli.net/2019/10/21/49EQ7azyYJmcRHC.png" alt="复制算法.png"></p>
 <p><strong>优点:不会产生内存碎片</strong></p>
 <p><strong>缺点:浪费一半内存</strong></p>
+<h4 id="标记清除算法"><a href="#标记清除算法" class="headerlink" title="标记清除算法"></a>标记清除算法</h4><p>老年代一般是由标记清除或者是标记清除与标记整理混合使用</p>
+<p>算法分成标记和清除两个阶段,先标记出要回收的对象,然后统一回收这些对象.</p>
+<p><strong>优点:不需要额外空间</strong></p>
+<p><strong>缺点:两次扫描,耗时严重;会产生内存碎片</strong></p>
+<h4 id="标记压缩算法"><a href="#标记压缩算法" class="headerlink" title="标记压缩算法"></a>标记压缩算法</h4><p>发生在老年代,标记清除与标记整理混合使用</p>
+<p><strong>优点:没有内存碎片</strong></p>
+<p><strong>缺点:扫描2次,需要移动对象的成本</strong></p>
+<h2 id="10-JMM-Java内存模型"><a href="#10-JMM-Java内存模型" class="headerlink" title="10.JMM(Java内存模型)"></a>10.JMM(Java内存模型)</h2><p>JMM本身是一种抽象的概念<strong>并不真实存在</strong>,它描述的是一组规则或规范,通过这组规范定义了程序中各个变量(包括实例字段,静态字段和构成数组对象的元素)的访问方式.</p>
+<p><strong>特征:</strong></p>
+<p><strong>可见性(通知机制,两个线程操纵同一个值,A线程内存的值改了,B线程要马上收到通知)</strong></p>
+<p><strong>给那个值加上volatile关键字,就建立了通知机制</strong></p>
+<p><strong>原子性,</strong></p>
+<p><strong>有序性</strong></p>
+<p>由于JVM运行程序的实体是线程,而每个线程创建时都会为其创建一个工作内存(有些地方称为栈空间),工作内存是每个线程私有的数据区域,而Java内存模型中规定所有变量都存储在<strong>主内存</strong>,主内存是共享内存区域,所有的线程都可以访问,<strong>但线程对变量的操作(读写等)必须在工作内存中进行,首先将变量从主内存拷贝到线程自己的工作空间,然后对变量进行操作,操作完成后再将变量写回主内存,</strong>不能直接操作主内存中的变量,各线程的工作内存中存储着主内存中的<strong>变量副本拷贝</strong>,因此不同的线程间无法访问对方的工作内存,线程间的通信(传值)必须通过主内存来完成,其简要访问过程如下图:</p>
+<p><img src="https://i.loli.net/2019/10/29/67N2YpXOwfTCqGz.png" alt="JMM.png"></p>
+<h2 id="小面试题"><a href="#小面试题" class="headerlink" title="小面试题:"></a>小面试题:</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CodeKobe</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CodeKobe</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"CodeKobe的构造方法1111111111"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#123;</span><br><span class="line">        System.out.println(<span class="string">"CodeKobe的构造块222222222222"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">"CodeKobe的静态代码块3333333333"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CodeBlock</span> </span>&#123;</span><br><span class="line">    &#123;</span><br><span class="line">        System.out.println(<span class="string">"CodeBlock的构造块4444444444444444"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">"CodeBlock的静态代码块5555555555555"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CodeBlock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"CodeBlock的构造方法6666666666666"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"------------------------------"</span>);</span><br><span class="line">        <span class="keyword">new</span> CodeKobe();</span><br><span class="line">        System.out.println(<span class="string">"------------------------------"</span>);</span><br><span class="line">        <span class="keyword">new</span> CodeKobe();</span><br><span class="line">        System.out.println(<span class="string">"------------------------------"</span>);</span><br><span class="line">        <span class="keyword">new</span> CodeBlock();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>答案:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">CodeBlock的静态代码块<span class="number">5555555555555</span></span><br><span class="line">------------------------------</span><br><span class="line">CodeKobe的静态代码块<span class="number">3333333333</span></span><br><span class="line">CodeKobe的构造块<span class="number">222222222222</span></span><br><span class="line">CodeKobe的构造方法<span class="number">1111111111</span></span><br><span class="line">------------------------------</span><br><span class="line">CodeKobe的构造块<span class="number">222222222222</span></span><br><span class="line">CodeKobe的构造方法<span class="number">1111111111</span></span><br><span class="line">------------------------------</span><br><span class="line">CodeBlock的构造块<span class="number">4444444444444444</span></span><br><span class="line">CodeBlock的构造方法<span class="number">6666666666666</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>要点:</strong></p>
+<p><strong>静态块&gt;构造块&gt;构造方法</strong></p>
 
     </div>
 
@@ -593,7 +624,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JVM体系结构概览"><span class="nav-number">1.</span> <span class="nav-text">JVM体系结构概览:</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-类加载器ClassLoader"><span class="nav-number">1.1.</span> <span class="nav-text">1.类加载器ClassLoader</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#class和Class的区别"><span class="nav-number">1.1.1.</span> <span class="nav-text">class和Class的区别:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#虚拟机自带的加载器"><span class="nav-number">1.1.2.</span> <span class="nav-text">虚拟机自带的加载器:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#双亲委派"><span class="nav-number">1.1.3.</span> <span class="nav-text">双亲委派:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#沙箱安全"><span class="nav-number">1.1.4.</span> <span class="nav-text">沙箱安全</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Native-Interface本地接口"><span class="nav-number">1.2.</span> <span class="nav-text">2.Native Interface本地接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-PC寄存器"><span class="nav-number">1.3.</span> <span class="nav-text">3.PC寄存器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-方法区-Method-Area"><span class="nav-number">1.4.</span> <span class="nav-text">4.方法区 Method Area</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-栈"><span class="nav-number">1.5.</span> <span class="nav-text">5.栈</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#栈管运行-堆管存储"><span class="nav-number">1.5.1.</span> <span class="nav-text">栈管运行,堆管存储</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#栈存储什么"><span class="nav-number">1.5.2.</span> <span class="nav-text">栈存储什么?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#栈运行原理"><span class="nav-number">1.5.3.</span> <span class="nav-text">栈运行原理:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-栈-堆-方法区的相互关系"><span class="nav-number">1.6.</span> <span class="nav-text">6.栈+堆+方法区的相互关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-堆heap"><span class="nav-number">1.7.</span> <span class="nav-text">7.堆heap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#堆体系结构概述"><span class="nav-number">1.7.1.</span> <span class="nav-text">堆体系结构概述:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#永久区-java7之前有"><span class="nav-number">1.7.2.</span> <span class="nav-text">永久区(java7之前有)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-堆内存调优"><span class="nav-number">1.8.</span> <span class="nav-text">8.堆内存调优</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GC收集日志信息"><span class="nav-number">1.8.1.</span> <span class="nav-text">GC收集日志信息:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-GC"><span class="nav-number">1.9.</span> <span class="nav-text">9.GC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GC是什么"><span class="nav-number">1.9.1.</span> <span class="nav-text">GC是什么?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四大算法"><span class="nav-number">1.9.2.</span> <span class="nav-text">四大算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#引用计数法"><span class="nav-number">1.9.2.1.</span> <span class="nav-text">引用计数法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复制算法"><span class="nav-number">1.9.2.2.</span> <span class="nav-text">复制算法</span></a></li></ol></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JVM体系结构概览"><span class="nav-number">1.</span> <span class="nav-text">JVM体系结构概览:</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-类加载器ClassLoader"><span class="nav-number">1.1.</span> <span class="nav-text">1.类加载器ClassLoader</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#class和Class的区别"><span class="nav-number">1.1.1.</span> <span class="nav-text">class和Class的区别:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#虚拟机自带的加载器"><span class="nav-number">1.1.2.</span> <span class="nav-text">虚拟机自带的加载器:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#双亲委派"><span class="nav-number">1.1.3.</span> <span class="nav-text">双亲委派:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#沙箱安全"><span class="nav-number">1.1.4.</span> <span class="nav-text">沙箱安全</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Native-Interface本地接口"><span class="nav-number">1.2.</span> <span class="nav-text">2.Native Interface本地接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-PC寄存器"><span class="nav-number">1.3.</span> <span class="nav-text">3.PC寄存器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-方法区-Method-Area"><span class="nav-number">1.4.</span> <span class="nav-text">4.方法区 Method Area</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-栈"><span class="nav-number">1.5.</span> <span class="nav-text">5.栈</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#栈管运行-堆管存储"><span class="nav-number">1.5.1.</span> <span class="nav-text">栈管运行,堆管存储</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#栈存储什么"><span class="nav-number">1.5.2.</span> <span class="nav-text">栈存储什么?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#栈运行原理"><span class="nav-number">1.5.3.</span> <span class="nav-text">栈运行原理:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-栈-堆-方法区的相互关系"><span class="nav-number">1.6.</span> <span class="nav-text">6.栈+堆+方法区的相互关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-堆heap"><span class="nav-number">1.7.</span> <span class="nav-text">7.堆heap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#堆体系结构概述"><span class="nav-number">1.7.1.</span> <span class="nav-text">堆体系结构概述:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#永久区-java7之前有"><span class="nav-number">1.7.2.</span> <span class="nav-text">永久区(java7之前有)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-堆内存调优"><span class="nav-number">1.8.</span> <span class="nav-text">8.堆内存调优</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GC收集日志信息"><span class="nav-number">1.8.1.</span> <span class="nav-text">GC收集日志信息:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-GC"><span class="nav-number">1.9.</span> <span class="nav-text">9.GC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GC是什么"><span class="nav-number">1.9.1.</span> <span class="nav-text">GC是什么?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四大算法"><span class="nav-number">1.9.2.</span> <span class="nav-text">四大算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#引用计数法"><span class="nav-number">1.9.2.1.</span> <span class="nav-text">引用计数法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复制算法"><span class="nav-number">1.9.2.2.</span> <span class="nav-text">复制算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#标记清除算法"><span class="nav-number">1.9.2.3.</span> <span class="nav-text">标记清除算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#标记压缩算法"><span class="nav-number">1.9.2.4.</span> <span class="nav-text">标记压缩算法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-JMM-Java内存模型"><span class="nav-number">1.10.</span> <span class="nav-text">10.JMM(Java内存模型)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小面试题"><span class="nav-number">1.11.</span> <span class="nav-text">小面试题:</span></a></li></ol></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -702,12 +733,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">126k</span>
+    <span title="站点总字数">145k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">1:54</span>
+    <span title="站点阅读时长">2:12</span>
 </div>
 
         
